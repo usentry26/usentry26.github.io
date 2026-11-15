@@ -160,7 +160,7 @@ footer { color: var(--text-3); font-size: 12.5px; padding: 20px 0 40px; text-ali
     <p class="lede" data-t="lede"></p>
     <a class="cta" id="cta" href="#" target="_blank" rel="noopener"><span data-t="cta"></span> →</a>
     <span class="cta-note" data-t="ctaNote"></span>
-    <div class="banner" id="demoBanner" hidden data-t="demo"></div>
+    <div class="banner" id="demoBanner" hidden></div>
   </header>
 
   <div class="kpis" id="kpis"></div>
@@ -239,7 +239,7 @@ footer { color: var(--text-3); font-size: 12.5px; padding: 20px 0 40px; text-ali
 
 <script>
 // ===== 设置 =====
-const FORM_URL = "https://wj.qq.com/";   // TODO: 换成你的腾讯问卷链接
+const FORM_URL = "https://wj.qq.com/s2/28691800/c1p8/";
 
 const T = {
   zh: {
@@ -247,6 +247,7 @@ const T = {
     lede: "匿名、众包的入境记录：每个人花两分钟分享自己的经历，所有人都能看到汇总后的数据——哪些人更容易进小黑屋、被问了什么、最近有没有收紧。",
     cta: "分享我的入境经历", ctaNote: "完全匿名 · 约 2 分钟 · 不收集任何身份信息",
     demo: "⚠️ 当前展示的是演示用的假数据，正式上线后会替换为真实提交。",
+    empty: "📮 刚刚上线，还没有数据——欢迎成为第一个分享入境经历的人！数据会定期汇总更新到这里。",
     kN: "累计样本", kHeld: "进小黑屋比例", kHeldS: "含最终被拒", kDen: "被拒入境或取消签证", kLast: "近 30 天新增", kLastS: "条记录",
     pass: "直接通过", held: "小黑屋后放行", denied: "被拒入境 / 取消签证",
     trendH: "每周入境记录", trendSub: "按入境日期所在的周统计，最近 26 周。",
@@ -275,6 +276,7 @@ const T = {
     lede: "Anonymous, crowdsourced entry reports. Share your experience in two minutes; everyone sees the aggregated picture — who gets sent to secondary inspection, what they're asked, and whether it's getting stricter.",
     cta: "Share my entry experience", ctaNote: "Fully anonymous · ~2 minutes · no identifying information collected",
     demo: "⚠️ This page currently shows FAKE demo data. It will be replaced with real submissions at launch.",
+    empty: "📮 Just launched — no reports yet. Be the first to share your entry experience! Results are aggregated here regularly.",
     kN: "Reports", kHeld: "Sent to secondary", kHeldS: "incl. later denied", kDen: "Denied entry / visa revoked", kLast: "Last 30 days", kLastS: "new reports",
     pass: "Admitted directly", held: "Secondary, then admitted", denied: "Denied entry / visa revoked",
     trendH: "Weekly entry reports", trendSub: "Grouped by week of entry date, last 26 weeks.",
@@ -430,7 +432,9 @@ function render() {
   if (!D) return;
 
   const s = D.summary;
-  document.getElementById("demoBanner").hidden = !D.demo;
+  const banner = document.getElementById("demoBanner");
+  banner.hidden = !(D.demo || s.n === 0);
+  banner.textContent = D.demo ? t("demo") : t("empty");
   document.getElementById("kpis").innerHTML = [
     [s.n, t("kN"), ""],
     [pct(s.held + s.denied, s.n) + "%", t("kHeld"), t("kHeldS")],

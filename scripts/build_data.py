@@ -313,10 +313,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("export", nargs="?", help="腾讯问卷 export (.xlsx / .csv)")
     ap.add_argument("--demo", action="store_true", help="generate fake demo data instead")
+    ap.add_argument("--empty", action="store_true", help="write an empty dataset (launch state)")
     a = ap.parse_args()
-    if not a.demo and not a.export:
-        ap.error("give an export file or --demo")
-    recs = fake_records() if a.demo else read_export(a.export)
+    if not (a.demo or a.empty or a.export):
+        ap.error("give an export file, --demo or --empty")
+    recs = fake_records() if a.demo else ([] if a.empty else read_export(a.export))
     data = aggregate(recs, a.demo)
     OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     s = data["summary"]
