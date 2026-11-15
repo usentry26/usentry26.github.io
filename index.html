@@ -95,6 +95,14 @@ h1 { font-size: clamp(22px, 4vw, 30px); line-height: 1.25; margin: 0 0 8px; }
 .more { font: inherit; font-size: 12.5px; color: var(--accent); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
 
 .wide { margin-top: 12px; }
+.trendcard { margin: 0 0 12px; }
+.tlegend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--text-2); margin: 0 0 6px; }
+.tlegend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: 3px; }
+.tlegend .hollow { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--text-3); background: var(--surface); vertical-align: -1px; }
+#trend svg { display: block; width: 100%; height: auto; overflow: visible; }
+#trend .axis { font-size: 11px; fill: var(--text-3); }
+#trend .gridl { stroke: var(--grid); stroke-width: 1; }
+#trend .nbar { fill: var(--border); }
 table.cases { width: 100%; border-collapse: collapse; font-size: 12.5px; }
 table.cases th { text-align: left; color: var(--text-3); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
 table.cases td { padding: 6px 8px; border-bottom: 1px solid var(--grid); vertical-align: top; }
@@ -147,6 +155,13 @@ footer { color: var(--text-3); font-size: 12px; padding: 20px 0 36px; text-align
   <div class="kpis" id="kpis"></div>
   <div class="legend" id="legend"></div>
 
+  <section class="card trendcard">
+    <h2 data-t="trendH"></h2>
+    <p class="sub" data-t="trendSub"></p>
+    <div class="tlegend" id="tlegend"></div>
+    <div id="trend"></div>
+  </section>
+
   <div class="cards" id="cards"></div>
 
   <section class="card wide">
@@ -183,6 +198,8 @@ const T = {
     t_14: "近 2 周", t_30: "近 30 天", t_90: "近 90 天",
     pass: "直接通过", held: "小黑屋后放行", denied: "被拒入境 / 遣返", revoked: "签证被取消",
     k_n: "Case 数", k_of: "占 {p}%", k_held: "进过小黑屋（含被拒）",
+    trendH: "入境情况随时间变化", trendSub: "每周一个点，跟随上方筛选（入境时间筛选除外）。空心点表示该周样本少于 5 例，参考价值较低；底部灰条为每周样本数。",
+    l_held: "进小黑屋比例（含被拒）", l_den: "被拒入境 / 签证取消比例", l_low: "样本 < 5",
     c_week: "入境周（最近 12 周）", c_port: "入境机场", c_visa: "签证类型", c_vs: "签证情况", c_role: "当前身份",
     c_mc: "专业大类", c_stem: "STEM 小类", c_non: "非 STEM 小类", c_sch: "国内就读院校类型", c_schSub: "多选，一个 case 可计入多项",
     c_stay: "本次入境前在国内停留", c_q: "被问到的问题", c_qSub: "仅进过小黑屋的 case；多选", c_dur: "在小黑屋待了多久", c_dev: "手机 / 电脑是否被检查",
@@ -206,6 +223,8 @@ const T = {
     t_14: "Last 2 weeks", t_30: "Last 30 days", t_90: "Last 90 days",
     pass: "Admitted directly", held: "Secondary, then admitted", denied: "Denied entry / removed", revoked: "Visa revoked",
     k_n: "Cases", k_of: "{p}%", k_held: "Sent to secondary (incl. denied)",
+    trendH: "Entry outcomes over time", trendSub: "One point per week; follows the filters above (except entry date). Hollow points = fewer than 5 reports that week; gray bars = weekly sample size.",
+    l_held: "Sent to secondary (incl. denied)", l_den: "Denied entry / visa revoked", l_low: "n < 5",
     c_week: "Entry week (last 12 weeks)", c_port: "Airport", c_visa: "Visa type", c_vs: "Visa history", c_role: "Status",
     c_mc: "Field", c_stem: "STEM sub-field", c_non: "Non-STEM sub-field", c_sch: "Chinese university type", c_schSub: "Multi-select",
     c_stay: "Time in China before entry", c_q: "Topics asked", c_qSub: "Secondary cases only; multi-select", c_dur: "Time in secondary", c_dev: "Phone / laptop searched?",
@@ -279,9 +298,9 @@ function inTime(r, v) {
   const wkEnd = new Date(r.w + "T00:00:00"); wkEnd.setDate(wkEnd.getDate() + 6);
   return (today() - wkEnd) / 864e5 < days;
 }
-function filtered() {
+function filtered(skip) {
   return D.rows.filter(r => FILTERS.every(f => {
-    if (!F[f.k]) return true;
+    if (!F[f.k] || f.k === skip) return true;
     if (f.k === "time") return inTime(r, F.time);
     return vals(r, f.k).includes(F[f.k]);
   }));
@@ -387,6 +406,43 @@ function renderBody() {
   });
   cards.querySelectorAll("[data-more]").forEach(b => b.onclick = () => { expanded[b.dataset.more] = !expanded[b.dataset.more]; renderBody(); });
   renderCases(rows);
+  renderTrend(filtered("time"));
+}
+
+function renderTrend(rows) {
+  const W = 1000, H = 260, ml = 40, mr = 50, mt = 12, mb = 46, NB = 22;
+  const pw = W - ml - mr, ph = H - mt - mb;
+  const end = today(); end.setDate(end.getDate() - ((end.getDay() + 6) % 7));
+  const NW = 16, wk = [];
+  for (let i = NW - 1; i >= 0; i--) { const d = new Date(end); d.setDate(d.getDate() - 7 * i); const k = isoDate(d); wk.push({ k, ...tally(rows.filter(r => r.w === k)) }); }
+  wk.forEach(w => { w.hr = w.n ? (w.n - w.pass) / w.n * 100 : null; w.dr = w.n ? (w.denied + w.revoked) / w.n * 100 : null; });
+  const x = i => ml + (NW === 1 ? pw / 2 : i * pw / (NW - 1));
+  const ymax = Math.max(20, Math.ceil(Math.max(0, ...wk.map(w => w.hr ?? 0)) / 20) * 20);
+  const y = v => mt + ph - v / ymax * ph;
+  const nmax = Math.max(1, ...wk.map(w => w.n));
+  const series = [["hr", "--o-held", t("l_held")], ["dr", "--o-denied", t("l_den")]];
+  let g = "";
+  for (let v = 0; v <= ymax; v += ymax / 4) g += `<line class="gridl" x1="${ml}" x2="${ml + pw}" y1="${y(v)}" y2="${y(v)}"/><text class="axis" x="${ml - 6}" y="${y(v) + 4}" text-anchor="end">${Math.round(v)}%</text>`;
+  wk.forEach((w, i) => { const bh = w.n / nmax * NB; g += `<rect class="nbar" x="${x(i) - 7}" y="${H - mb + 8 + NB - bh}" width="14" height="${bh}" rx="2"/>`; });
+  wk.forEach((w, i) => { if (i % 2 === (NW - 1) % 2) g += `<text class="axis" x="${x(i)}" y="${H - 2}" text-anchor="middle">${fmtWeek(w.k)}</text>`; });
+  series.forEach(([key, col, name]) => {
+    const pts = wk.map((w, i) => w[key] == null ? null : [x(i), y(w[key]), w.n]);
+    let d = "", pen = false;
+    pts.forEach(p => { if (!p) { pen = false; return; } d += (pen ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); pen = true; });
+    g += `<path d="${d}" fill="none" stroke="var(${col})" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach(p => { if (p) g += `<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="${p[2] < 5 ? "var(--surface)" : `var(${col})`}" stroke="var(${col})" stroke-width="2"/>`; });
+    const last = [...pts].reverse().find(Boolean);
+    if (last) g += `<text x="${last[0] + 10}" y="${last[1] + 4}" font-size="12" fill="var(--text)">${Math.round(wk[pts.lastIndexOf(last)][key])}%</text>`;
+  });
+  wk.forEach((w, i) => g += `<rect data-tip data-wi="${i}" x="${x(i) - pw / (NW - 1) / 2}" y="${mt}" width="${pw / (NW - 1)}" height="${H - mt}" fill="transparent"/>`);
+  const el = document.getElementById("trend");
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${t("trendH")}">${g}</svg>`;
+  el.querySelectorAll("[data-wi]").forEach(r => {
+    const w = wk[+r.dataset.wi];
+    r._tip = `<b>${t("weekOf", { d: fmtWeek(w.k) })}</b>` + (w.n ? series.map(([k, c, n]) => `<div class="r"><span><i style="background:var(${c})"></i>${n}</span><span>${Math.round(w[k])}%</span></div>`).join("") : "") +
+      `<div class="r" style="color:var(--text-3);margin-top:3px"><span>${t("k_n")}</span><span>${w.n}</span></div>`;
+  });
+  document.getElementById("tlegend").innerHTML = series.map(([k, c, n]) => `<span><i style="background:var(${c})"></i>${n}</span>`).join("") + `<span><i class="hollow"></i>${t("l_low")}</span>`;
 }
 
 function renderCases(rows) {
