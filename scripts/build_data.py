@@ -264,53 +264,25 @@ def school_group(r):
 
 
 def aggregate(recs, demo):
+    """Publish de-identified rows (week-level date, no school, no free text) for client-side filtering."""
     today = dt.date.today()
     recs = [r for r in recs if r["outcome"] and r["date"] and dt.date(2020, 1, 1) <= r["date"] <= today]
-    for r in recs:
-        r["school_group"] = school_group(r)
-
-    # weekly trend (Mon-start weeks), last TREND_WEEKS weeks incl. empty ones
-    start = today - dt.timedelta(days=today.weekday()) - dt.timedelta(weeks=TREND_WEEKS - 1)
-    weeks = defaultdict(list)
+    recs.sort(key=lambda r: r["date"], reverse=True)
+    rows = []
     for r in recs:
         wk = r["date"] - dt.timedelta(days=r["date"].weekday())
-        if wk >= start:
-            weeks[wk].append(r)
-    trend = [{"week": (start + dt.timedelta(weeks=i)).isoformat(),
-              **tally(weeks.get(start + dt.timedelta(weeks=i), []))} for i in range(TREND_WEEKS)]
-
-    held = [r for r in recs if r["outcome"] != "pass"]
-    grad = [r for r in recs if r["role"] in GRAD_ROLES]
+        rows.append({
+            "w": wk.isoformat(), "port": r["port"], "visa": r["visa"], "vs": r["visa_status"],
+            "stay": r.get("stay"), "role": r["role"], "mc": r["major_cat"], "ms": r["major_sub"],
+            "sch": sorted(set(x for x in (r["schools"] or []) if x)), "o": r["outcome"],
+            "dur": r["duration"] if r["outcome"] != "pass" else None,
+            "q": sorted(set(x for x in r["questions"] if x)) if r["outcome"] != "pass" else [],
+            "dev": r["device"] if r["outcome"] != "pass" else None,
+        })
     stories = [{"month": r["date"].strftime("%Y-%m"), "visa": r["visa"], "role": r["role"],
-                "major_cat": r["major_cat"], "outcome": r["outcome"], "duration": r["duration"],
-                "text": r["story"][:600]}
-               for r in sorted(recs, key=lambda r: r["date"], reverse=True) if r["publish"] and r["story"]]
-
-    return {
-        "demo": demo,
-        "updated": today.isoformat(),
-        "min_n": MIN_N,
-        "summary": {**tally(recs),
-                    "revoked": sum(r["outcome"] == "revoked" for r in recs),
-                    "last30": sum((today - r["date"]).days < 30 for r in recs)},
-        "trend": trend,
-        "by_school_grad": breakdown(grad, "school_group",
-                                    ["国防七子或军工背景", "其他国内高校", "没有在国内读过大学"]),
-        "by_major_cat": breakdown(recs, "major_cat", ["STEM", "非 STEM"]),
-        "by_stem_sub": breakdown([r for r in recs if r["major_cat"] == "STEM"], "major_sub"),
-        "by_nonstem_sub": breakdown([r for r in recs if r["major_cat"] == "非 STEM"], "major_sub"),
-        "by_role": breakdown(recs, "role", ROLES),
-        "by_visa": breakdown(recs, "visa", VISAS),
-        "by_visa_status": breakdown(recs, "visa_status", VISA_STATUS),
-        "by_port": breakdown(recs, "port"),
-        "by_stay": breakdown(recs, "stay", STAYS),
-        "held_n": len(held),
-        "questions": sorted(counts([q for r in held for q in r["questions"]], QUESTIONS),
-                            key=lambda x: -x["n"]),
-        "durations": counts([r["duration"] for r in held], DURATIONS),
-        "devices": counts([r["device"] for r in held], DEVICES),
-        "stories": stories[:50],
-    }
+                "mc": r["major_cat"], "o": r["outcome"], "dur": r["duration"], "text": r["story"][:600]}
+               for r in recs if r["publish"] and r["story"]]
+    return {"demo": demo, "updated": today.isoformat(), "rows": rows, "stories": stories[:60]}
 
 
 def main():
@@ -326,9 +298,7 @@ def main():
     data = aggregate(recs, a.demo)
     out = Path(a.out)
     out.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
-    s = data["summary"]
-    print(f"wrote {out}  records={s['n']}  held={s['held']}  denied/revoked={s['denied']}  "
-          f"stories={len(data['stories'])}{'  (DEMO)' if a.demo else ''}")
+    print(f"wrote {out}  records={len(data['rows'])}  stories={len(data['stories'])}{'  (DEMO)' if a.demo else ''}")
 
 
 if __name__ == "__main__":
