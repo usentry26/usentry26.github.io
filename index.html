@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>美国入境观察 · US Entry</title>
+<meta name="description" content="匿名众包统计：中国留学生与学者入境美国的情况——小黑屋比例、被拒入境、常被问到的问题。">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f5f2; --surface: #fcfcfb; --border: #e3e1db; --grid: #ebe9e4;
+  --text: #0b0b0b; --text-2: #52514e; --text-3: #7a7974;
+  --accent: #2a78d6; --accent-ink: #ffffff;
+  --o-pass: #c9c7bf; --o-held: #eda100; --o-denied: #d03b3b;
+  --bar: #2a78d6; --banner: #fff4d6; --banner-ink: #6b4a00;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211; --surface: #1a1a19; --border: #33322f; --grid: #2a2a28;
+    --text: #f0efec; --text-2: #c3c2b7; --text-3: #8f8e86;
+    --accent: #3987e5; --accent-ink: #ffffff;
+    --o-pass: #4a4945; --o-held: #c98500; --o-denied: #e05555;
+    --bar: #3987e5; --banner: #3a2f12; --banner-ink: #f3d89a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211; --surface: #1a1a19; --border: #33322f; --grid: #2a2a28;
+  --text: #f0efec; --text-2: #c3c2b7; --text-3: #8f8e86;
+  --accent: #3987e5; --accent-ink: #ffffff;
+  --o-pass: #4a4945; --o-held: #c98500; --o-denied: #e05555;
+  --bar: #3987e5; --banner: #3a2f12; --banner-ink: #f3d89a;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", "Noto Sans CJK SC", "Helvetica Neue", Arial, sans-serif;
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+a { color: var(--accent); }
+
+header.top { padding: 28px 0 8px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.brand { font-weight: 700; font-size: 15px; letter-spacing: .02em; color: var(--text-2); }
+.tools { display: flex; gap: 6px; }
+.tools button {
+  font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-2);
+}
+h1 { font-size: clamp(26px, 5vw, 38px); line-height: 1.2; margin: 18px 0 8px; }
+.lede { color: var(--text-2); max-width: 680px; margin: 0 0 18px; }
+.cta {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  background: var(--accent); color: var(--accent-ink); font-weight: 600;
+  padding: 12px 20px; border-radius: 10px; font-size: 16px;
+}
+.cta:hover { filter: brightness(1.08); }
+.cta-note { display: block; color: var(--text-3); font-size: 13px; margin-top: 8px; }
+
+.banner {
+  background: var(--banner); color: var(--banner-ink); border-radius: 10px;
+  padding: 10px 14px; font-size: 14px; margin: 18px 0 0;
+}
+
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0 8px; }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.kpi .v { font-size: 30px; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.kpi .l { color: var(--text-2); font-size: 13px; }
+.kpi .s { color: var(--text-3); font-size: 12px; }
+
+section.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px 20px 18px; margin: 16px 0;
+}
+section.card h2 { font-size: 19px; margin: 0 0 4px; }
+.sub { color: var(--text-2); font-size: 13.5px; margin: 0 0 14px; }
+.note { color: var(--text-3); font-size: 12.5px; margin: 10px 0 0; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 28px; }
+.grid2 h3, .card h3 { font-size: 14.5px; margin: 14px 0 8px; color: var(--text); }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--text-2); margin: 0 0 12px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* 100% stacked outcome rows */
+.srow { display: grid; grid-template-columns: minmax(110px, 34%) 1fr 64px; gap: 10px; align-items: center; padding: 4px 0; }
+.srow .lab { font-size: 13.5px; line-height: 1.3; }
+.srow .lab small { color: var(--text-3); margin-left: 4px; font-variant-numeric: tabular-nums; }
+.srow .val { text-align: right; font-size: 13.5px; font-variant-numeric: tabular-nums; color: var(--text); }
+.srow.low .lab, .srow.low .val { color: var(--text-3); }
+.stack { display: flex; height: 14px; gap: 2px; border-radius: 4px; overflow: hidden; }
+.stack span { display: block; height: 100%; }
+.srow:hover .stack, .col:hover .colbar { filter: brightness(1.08); }
+.srow, .col { cursor: default; }
+.valhead { display: grid; grid-template-columns: minmax(110px, 34%) 1fr 64px; gap: 10px; font-size: 12px; color: var(--text-3); }
+.valhead span:last-child { text-align: right; }
+
+/* single-series bars */
+.brow { display: grid; grid-template-columns: minmax(130px, 40%) 1fr 72px; gap: 10px; align-items: center; padding: 3px 0; }
+.brow .lab { font-size: 13.5px; line-height: 1.3; }
+.brow .track { height: 12px; }
+.brow .fill { height: 100%; background: var(--bar); border-radius: 0 4px 4px 0; min-width: 2px; }
+.brow .val { text-align: right; font-size: 13px; font-variant-numeric: tabular-nums; }
+
+/* weekly columns */
+.trend { position: relative; }
+.cols { display: flex; align-items: flex-end; gap: 3px; height: 180px; border-bottom: 1px solid var(--grid); padding-top: 6px; }
+.col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.colbar { display: flex; flex-direction: column-reverse; gap: 2px; border-radius: 4px 4px 0 0; overflow: hidden; }
+.colbar span { display: block; width: 100%; }
+.xaxis { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-3); margin-top: 6px; }
+.ymax { position: absolute; top: 0; left: 0; font-size: 11px; color: var(--text-3); }
+
+.more { font: inherit; font-size: 13px; color: var(--accent); background: none; border: 0; padding: 6px 0 0; cursor: pointer; }
+
+.stories { display: grid; gap: 10px; }
+.story { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+.story .meta { font-size: 12.5px; color: var(--text-3); margin-bottom: 4px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.pill { font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-2); }
+.pill.dot::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; background: var(--c); }
+.story p { margin: 0; }
+
+details.about { font-size: 14px; color: var(--text-2); }
+details.about summary { cursor: pointer; font-weight: 600; color: var(--text); }
+details.about li { margin: 4px 0; }
+footer { color: var(--text-3); font-size: 12.5px; padding: 20px 0 40px; text-align: center; }
+
+#tip {
+  position: fixed; z-index: 10; pointer-events: none; opacity: 0; transition: opacity .08s;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border);
+  box-shadow: 0 6px 24px rgba(0,0,0,.14); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; min-width: 150px;
+}
+#tip b { display: block; margin-bottom: 4px; }
+#tip .r { display: flex; justify-content: space-between; gap: 14px; font-variant-numeric: tabular-nums; }
+#tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+
+@media (max-width: 720px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .grid2 { grid-template-columns: 1fr; }
+  section.card { padding: 16px 14px; }
+  .srow, .valhead { grid-template-columns: minmax(96px, 38%) 1fr 54px; gap: 8px; }
+  .brow { grid-template-columns: minmax(110px, 46%) 1fr 60px; gap: 8px; }
+  .cols { height: 140px; gap: 2px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="topbar">
+      <div class="brand">US Entry · 美国入境观察</div>
+      <div class="tools">
+        <button id="langBtn" type="button">EN</button>
+        <button id="themeBtn" type="button" aria-label="theme">◐</button>
+      </div>
+    </div>
+    <h1 data-t="title"></h1>
+    <p class="lede" data-t="lede"></p>
+    <a class="cta" id="cta" href="#" target="_blank" rel="noopener"><span data-t="cta"></span> →</a>
+    <span class="cta-note" data-t="ctaNote"></span>
+    <div class="banner" id="demoBanner" hidden data-t="demo"></div>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <section class="card">
+    <h2 data-t="trendH"></h2>
+    <p class="sub" data-t="trendSub"></p>
+    <div class="legend legend-outcome"></div>
+    <div class="trend" id="trend"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="schoolH"></h2>
+    <p class="sub" data-t="schoolSub"></p>
+    <div class="legend legend-outcome"></div>
+    <div id="bySchool"></div>
+    <p class="note" data-t="schoolNote"></p>
+  </section>
+
+  <section class="card">
+    <h2 data-t="majorH"></h2>
+    <p class="sub" data-t="majorSub"></p>
+    <div class="legend legend-outcome"></div>
+    <div id="byMajorCat"></div>
+    <h3 data-t="stemH"></h3>
+    <div id="byStem"></div>
+    <h3 data-t="nonstemH"></h3>
+    <div id="byNonstem"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="portH"></h2>
+    <p class="sub" data-t="portSub"></p>
+    <div class="legend legend-outcome"></div>
+    <div id="byPort"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="whoH"></h2>
+    <div class="legend legend-outcome"></div>
+    <h3 data-t="roleH"></h3>
+    <div id="byRole"></div>
+    <h3 data-t="visaH"></h3>
+    <div id="byVisa"></div>
+    <h3 data-t="visaStatusH"></h3>
+    <div id="byVisaStatus"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="roomH"></h2>
+    <p class="sub" id="roomSub"></p>
+    <h3 data-t="qH"></h3>
+    <div id="questions"></div>
+    <div class="grid2">
+      <div><h3 data-t="durH"></h3><div id="durations"></div></div>
+      <div><h3 data-t="devH"></h3><div id="devices"></div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="storyH"></h2>
+    <p class="sub" data-t="storySub"></p>
+    <div class="stories" id="stories"></div>
+  </section>
+
+  <section class="card">
+    <details class="about" open>
+      <summary data-t="aboutH"></summary>
+      <ul id="aboutList"></ul>
+    </details>
+  </section>
+
+  <footer><span data-t="updated"></span> <span id="updated"></span> · US Entry</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+// ===== 设置 =====
+const FORM_URL = "https://wj.qq.com/";   // TODO: 换成你的腾讯问卷链接
+
+const T = {
+  zh: {
+    title: "中国留学生入境美国，现在是什么情况？",
+    lede: "匿名、众包的入境记录：每个人花两分钟分享自己的经历，所有人都能看到汇总后的数据——哪些人更容易进小黑屋、被问了什么、最近有没有收紧。",
+    cta: "分享我的入境经历", ctaNote: "完全匿名 · 约 2 分钟 · 不收集任何身份信息",
+    demo: "⚠️ 当前展示的是演示用的假数据，正式上线后会替换为真实提交。",
+    kN: "累计样本", kHeld: "进小黑屋比例", kHeldS: "含最终被拒", kDen: "被拒入境或取消签证", kLast: "近 30 天新增", kLastS: "条记录",
+    pass: "直接通过", held: "小黑屋后放行", denied: "被拒入境 / 取消签证",
+    trendH: "每周入境记录", trendSub: "按入境日期所在的周统计，最近 26 周。",
+    schoolH: "国内院校背景与 10043", schoolSub: "仅统计硕士、博士、博士后和访问学者（10043 号公告主要针对研究生及以上）。按在国内就读过的院校类型分组。",
+    schoolNote: "10043 号总统公告（2020）限制与中国“军民融合”相关机构有关联的研究生及研究人员入境。此处只是自愿上报数据的对比，不代表个人风险判断。",
+    majorH: "专业", majorSub: "右侧数字为进小黑屋比例（含被拒）。",
+    stemH: "STEM 细分方向", nonstemH: "非 STEM 细分方向",
+    portH: "入境机场", portSub: "不同机场的边检情况。样本少的机场合并为“其他”。",
+    whoH: "身份与签证", roleH: "当前身份", visaH: "签证类型", visaStatusH: "签证情况",
+    roomH: "小黑屋里发生了什么", roomSubT: "基于 {n} 条进过小黑屋的记录。",
+    qH: "被问到的问题（占进小黑屋人数的比例）", durH: "在小黑屋待了多久", devH: "手机或电脑是否被检查",
+    storyH: "匿名经历", storySub: "经审核后公开。为保护隐私，只显示月份、签证和身份等粗略信息。", noStory: "暂时还没有公开的经历。",
+    aboutH: "关于数据 · 隐私 · 免责声明",
+    about: [
+      "数据来自自愿匿名填写的问卷，<b>存在偏差</b>：遇到问题的人更愿意来填，所以这里的小黑屋比例很可能高于真实情况。请看趋势和对比，不要把比例当作个人概率。",
+      "我们<b>不收集</b>姓名、护照号、联系方式、学校名或 IP。网站只公开汇总后的统计数字；少于 {k} 条的分类会被合并，避免反推出个人。",
+      "带 <span style='color:var(--text-3)'>灰色</span> 的行样本较少（少于 10 条），比例仅供参考。",
+      "本网站不构成任何法律建议。遇到入境问题请联系学校国际学生办公室（ISSS / OIA）或移民律师。",
+      "数据定期手动更新。"
+    ],
+    updated: "最后更新：", rate: "小黑屋", records: "条", of: "共",
+    showAll: "展开全部", showLess: "收起", n: "样本", pct: "比例"
+  },
+  en: {
+    title: "What is entering the U.S. like for Chinese students right now?",
+    lede: "Anonymous, crowdsourced entry reports. Share your experience in two minutes; everyone sees the aggregated picture — who gets sent to secondary inspection, what they're asked, and whether it's getting stricter.",
+    cta: "Share my entry experience", ctaNote: "Fully anonymous · ~2 minutes · no identifying information collected",
+    demo: "⚠️ This page currently shows FAKE demo data. It will be replaced with real submissions at launch.",
+    kN: "Reports", kHeld: "Sent to secondary", kHeldS: "incl. later denied", kDen: "Denied entry / visa revoked", kLast: "Last 30 days", kLastS: "new reports",
+    pass: "Admitted directly", held: "Secondary, then admitted", denied: "Denied entry / visa revoked",
+    trendH: "Weekly entry reports", trendSub: "Grouped by week of entry date, last 26 weeks.",
+    schoolH: "Chinese university background & PP 10043", schoolSub: "Graduate students, postdocs and visiting scholars only (PP 10043 targets graduate level and above), grouped by type of university attended in China.",
+    schoolNote: "Presidential Proclamation 10043 (2020) restricts entry of graduate students and researchers linked to PRC “military-civil fusion” entities. This is a comparison of self-reported data, not an individual risk assessment.",
+    majorH: "Field of study", majorSub: "Number on the right = share sent to secondary (incl. denied).",
+    stemH: "STEM fields", nonstemH: "Non-STEM fields",
+    portH: "Port of entry (airport)", portSub: "Airports with few reports are grouped into “Other”.",
+    whoH: "Status & visa", roleH: "Current status", visaH: "Visa type", visaStatusH: "Visa history",
+    roomH: "What happens in secondary", roomSubT: "Based on {n} reports that went to secondary inspection.",
+    qH: "Topics asked about (share of secondary cases)", durH: "Time spent in secondary", devH: "Phone / laptop searched?",
+    storyH: "Anonymous stories", storySub: "Published after review. Only coarse details (month, visa, status) are shown.", noStory: "No published stories yet.",
+    aboutH: "About the data · Privacy · Disclaimer",
+    about: [
+      "Data are self-reported and <b>biased</b>: people with problems are more likely to report, so rates here likely overstate reality. Read trends and comparisons, not personal odds.",
+      "We do <b>not</b> collect names, passport numbers, contact info, school names or IPs. Only aggregates are published; categories with fewer than {k} reports are merged.",
+      "Rows in <span style='color:var(--text-3)'>gray</span> have fewer than 10 reports — treat with caution.",
+      "Nothing here is legal advice. Contact your school's international office or an immigration attorney.",
+      "Data are updated manually on a regular basis."
+    ],
+    updated: "Last updated:", rate: "secondary", records: "", of: "of",
+    showAll: "Show all", showLess: "Show less", n: "n", pct: "Share"
+  }
+};
+
+const EN = {
+  "STEM": "STEM", "非 STEM": "Non-STEM", "其他（样本较少）": "Other (few reports)",
+  "国防七子或军工背景": "“Seven Sons of National Defence” / defence-linked", "其他国内高校": "Other Chinese universities", "没有在国内读过大学": "No university in China",
+  "本科": "Undergraduate", "硕士": "Master's", "博士": "PhD", "博士后": "Postdoc", "访问学者": "Visiting scholar", "工作": "Employed", "其他": "Other",
+  "首次签证": "First visa", "续签后首次入境": "First entry after renewal", "用旧签证再次入境": "Re-entry on existing visa",
+  "计算机科学/软件": "Computer science / software", "AI/机器学习/数据科学": "AI / ML / data science", "网络安全": "Cybersecurity",
+  "电子电气/通信": "EE / communications", "芯片/半导体/集成电路": "Chips / semiconductors / IC", "航空航天": "Aerospace",
+  "机械/机器人/自动化": "Mechanical / robotics / automation", "材料科学": "Materials science", "核工程/核物理": "Nuclear eng. / physics",
+  "物理/天文": "Physics / astronomy", "化学/化工": "Chemistry / chem. eng.", "数学/统计": "Math / statistics",
+  "生物/生物医学/生物工程": "Biology / biomedical / bioeng.", "医学/药学/公共卫生": "Medicine / pharmacy / public health",
+  "土木/环境/能源": "Civil / environmental / energy", "其他 STEM": "Other STEM",
+  "商科/金融/会计": "Business / finance / accounting", "经济": "Economics", "法律": "Law", "政治/国际关系": "Politics / IR",
+  "教育": "Education", "传媒/新闻": "Media / journalism", "文学/语言/历史/哲学": "Humanities", "社会学/心理学": "Sociology / psychology",
+  "艺术/设计/建筑": "Art / design / architecture", "其他非 STEM": "Other non-STEM",
+  "研究方向": "Research topic", "导师背景": "Advisor's background", "国内院校与科研经历": "Chinese university & research history",
+  "资助来源（如 CSC）": "Funding source (e.g. CSC)", "与军方或军工单位的联系": "Links to military / defence entities",
+  "本人或家人是否是党员": "CCP membership (self or family)", "家人职业": "Family members' jobs", "毕业后是否回国": "Plans after graduation",
+  "之前的出入境记录": "Past travel history", "查看微信或社交媒体": "Asked to show WeChat / social media", "和某人或某机构的关系": "Relationship with a person / organisation",
+  "30 分钟以内": "< 30 min", "30 分钟到 1 小时": "30 min – 1 h", "1 到 3 小时": "1 – 3 h", "3 到 6 小时": "3 – 6 h", "6 小时以上": "> 6 h",
+  "没有": "No", "被要求解锁并当面翻看": "Unlocked & browsed in front of me", "被拿走单独检查": "Taken away and searched", "不确定": "Not sure",
+  "加拿大预清关（温哥华/多伦多等）": "Preclearance in Canada (YVR/YYZ…)", "其他地点预清关（都柏林/阿布扎比等）": "Other preclearance (DUB/AUH…)", "陆路口岸": "Land border"
+};
+
+let lang = "zh", D = null;
+try { lang = localStorage.getItem("ue-lang") || "zh"; } catch (e) {}
+try { const th = localStorage.getItem("ue-theme"); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+
+const t = k => T[lang][k];
+const L = k => {
+  if (lang === "zh" || k == null) return k;
+  if (EN[k]) return EN[k];
+  const m = /^([A-Z]{3}) (.+)$/.exec(k);     // "LAX 洛杉矶" -> "LAX"
+  return m ? m[1] : k;
+};
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const OC = [["pass", "--o-pass"], ["held", "--o-held"], ["denied", "--o-denied"]];
+
+// ---------- tooltip ----------
+const tip = document.getElementById("tip");
+function showTip(e, html) {
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const r = tip.getBoundingClientRect(), pad = 12;
+  let x = e.clientX + pad, y = e.clientY + pad;
+  if (x + r.width > innerWidth - 8) x = e.clientX - r.width - pad;
+  if (y + r.height > innerHeight - 8) y = e.clientY - r.height - pad;
+  tip.style.left = Math.max(8, x) + "px"; tip.style.top = Math.max(8, y) + "px";
+}
+const hideTip = () => tip.style.opacity = 0;
+function outcomeTip(title, d) {
+  return `<b>${esc(title)}</b>` + OC.slice().reverse().map(([k, v]) =>
+    `<div class="r"><span><i style="background:var(${v})"></i>${t(k)}</span><span>${d[k]} · ${pct(d[k], d.n)}%</span></div>`).join("") +
+    `<div class="r" style="color:var(--text-3);margin-top:3px"><span>${t("n")}</span><span>${d.n}</span></div>`;
+}
+function bindTips(root) {
+  root.querySelectorAll("[data-tip]").forEach(el => {
+    el.addEventListener("mousemove", e => showTip(e, el._tip));
+    el.addEventListener("mouseleave", hideTip);
+  });
+}
+
+// ---------- renderers ----------
+function stackRows(el, rows, limit) {
+  if (!rows || !rows.length) { el.innerHTML = `<p class="note">—</p>`; return; }
+  const draw = all => {
+    const list = all || !limit ? rows : rows.slice(0, limit);
+    el.innerHTML = `<div class="valhead"><span></span><span></span><span>${t("rate")}</span></div>` +
+      list.map((d, i) => {
+        const hr = pct(d.held + d.denied, d.n);
+        return `<div class="srow${d.n < 10 ? " low" : ""}" data-tip data-i="${i}">
+          <div class="lab">${esc(L(d.key))}<small>${d.n}</small></div>
+          <div class="stack">${OC.map(([k, v]) => d[k] ? `<span style="width:${d[k] / d.n * 100}%;background:var(${v})"></span>` : "").join("")}</div>
+          <div class="val">${hr}%</div></div>`;
+      }).join("") +
+      (limit && rows.length > limit ? `<button class="more" type="button">${all ? t("showLess") : t("showAll") + ` (${rows.length})`}</button>` : "");
+    el.querySelectorAll(".srow").forEach(r => r._tip = outcomeTip(L(list[+r.dataset.i].key), list[+r.dataset.i]));
+    bindTips(el);
+    const b = el.querySelector(".more"); if (b) b.onclick = () => draw(!all);
+  };
+  draw(false);
+}
+
+function barRows(el, rows, denom) {
+  if (!rows || !rows.length) { el.innerHTML = `<p class="note">—</p>`; return; }
+  const max = Math.max(...rows.map(r => r.n));
+  el.innerHTML = rows.map((d, i) => `<div class="brow" data-tip data-i="${i}">
+      <div class="lab">${esc(L(d.key))}</div>
+      <div class="track"><div class="fill" style="width:${d.n / max * 100}%"></div></div>
+      <div class="val">${pct(d.n, denom)}%</div></div>`).join("");
+  el.querySelectorAll(".brow").forEach(r => {
+    const d = rows[+r.dataset.i];
+    r._tip = `<b>${esc(L(d.key))}</b><div class="r"><span>${t("n")}</span><span>${d.n} / ${denom}</span></div><div class="r"><span>${t("pct")}</span><span>${pct(d.n, denom)}%</span></div>`;
+  });
+  bindTips(el);
+}
+
+function trend(el, weeks) {
+  const max = Math.max(1, ...weeks.map(w => w.n));
+  const fmt = s => { const d = new Date(s + "T00:00:00"); return lang === "zh" ? `${d.getMonth() + 1}月${d.getDate()}日` : d.toLocaleDateString("en-US", { month: "short", day: "numeric" }); };
+  el.innerHTML = `<div class="ymax">${max}</div><div class="cols">` + weeks.map((w, i) =>
+    `<div class="col" data-tip data-i="${i}"><div class="colbar" style="height:${w.n / max * 100}%">` +
+    OC.map(([k, v]) => w[k] ? `<span style="flex:${w[k]} 0 0;background:var(${v})"></span>` : "").join("") +
+    `</div></div>`).join("") + `</div>
+    <div class="xaxis"><span>${fmt(weeks[0].week)}</span><span>${fmt(weeks[Math.floor(weeks.length / 2)].week)}</span><span>${fmt(weeks[weeks.length - 1].week)}</span></div>`;
+  el.querySelectorAll(".col").forEach(c => {
+    const w = weeks[+c.dataset.i];
+    c._tip = outcomeTip((lang === "zh" ? "当周起始 " : "Week of ") + fmt(w.week), w);
+  });
+  bindTips(el);
+}
+
+function stories(el, list) {
+  if (!list.length) { el.innerHTML = `<p class="note">${t("noStory")}</p>`; return; }
+  const ocKey = o => o === "revoked" ? "denied" : o;
+  el.innerHTML = list.map(s => `<div class="story"><div class="meta">
+      <span>${esc(s.month)}</span>
+      <span class="pill dot" style="--c:var(${OC.find(o => o[0] === ocKey(s.outcome))[1]})">${t(ocKey(s.outcome))}</span>
+      ${[s.visa, s.role, s.major_cat, s.duration].filter(Boolean).map(x => `<span class="pill">${esc(L(x))}</span>`).join("")}
+    </div><p>${esc(s.text)}</p></div>`).join("");
+}
+
+function render() {
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+  document.querySelectorAll("[data-t]").forEach(el => el.innerHTML = t(el.dataset.t));
+  document.getElementById("langBtn").textContent = lang === "zh" ? "EN" : "中文";
+  document.querySelectorAll(".legend-outcome").forEach(el =>
+    el.innerHTML = OC.map(([k, v]) => `<span><i style="background:var(${v})"></i>${t(k)}</span>`).join(""));
+  if (!D) return;
+
+  const s = D.summary;
+  document.getElementById("demoBanner").hidden = !D.demo;
+  document.getElementById("kpis").innerHTML = [
+    [s.n, t("kN"), ""],
+    [pct(s.held + s.denied, s.n) + "%", t("kHeld"), t("kHeldS")],
+    [pct(s.denied, s.n) + "%", t("kDen"), `${s.denied} ${t("records")}`],
+    ["+" + s.last30, t("kLast"), t("kLastS")]
+  ].map(([v, l, sub]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${sub}</div></div>`).join("");
+
+  trend(document.getElementById("trend"), D.trend);
+  stackRows(document.getElementById("bySchool"), D.by_school_grad);
+  stackRows(document.getElementById("byMajorCat"), D.by_major_cat);
+  stackRows(document.getElementById("byStem"), D.by_stem_sub, 8);
+  stackRows(document.getElementById("byNonstem"), D.by_nonstem_sub, 6);
+  stackRows(document.getElementById("byPort"), D.by_port, 12);
+  stackRows(document.getElementById("byRole"), D.by_role);
+  stackRows(document.getElementById("byVisa"), D.by_visa);
+  stackRows(document.getElementById("byVisaStatus"), D.by_visa_status);
+  document.getElementById("roomSub").textContent = t("roomSubT").replace("{n}", D.held_n);
+  barRows(document.getElementById("questions"), D.questions, D.held_n);
+  barRows(document.getElementById("durations"), D.durations, D.held_n);
+  barRows(document.getElementById("devices"), D.devices, D.held_n);
+  stories(document.getElementById("stories"), D.stories);
+  document.getElementById("aboutList").innerHTML = t("about").map(x => `<li>${x.replace("{k}", D.min_n)}</li>`).join("");
+  document.getElementById("updated").textContent = D.updated;
+}
+
+document.getElementById("cta").href = FORM_URL;
+document.getElementById("langBtn").onclick = () => {
+  lang = lang === "zh" ? "en" : "zh";
+  try { localStorage.setItem("ue-lang", lang); } catch (e) {}
+  render();
+};
+document.getElementById("themeBtn").onclick = () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark";
+  try { localStorage.setItem("ue-theme", root.dataset.theme); } catch (e) {}
+};
+
+render();
+fetch("data.json", { cache: "no-cache" }).then(r => r.json()).then(d => { D = d; render(); })
+  .catch(() => { document.getElementById("kpis").innerHTML = `<p class="note">数据加载失败 / Failed to load data.</p>`; });
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# 原始问卷导出绝不能提交（只提交聚合后的 data.json）
+raw/
+*.xlsx
+*.xls
+*.csv
+__pycache__/
+.DS_Store
