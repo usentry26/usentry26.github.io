@@ -59,6 +59,7 @@ h1 { font-size: clamp(26px, 5vw, 38px); line-height: 1.2; margin: 18px 0 8px; }
 }
 .cta:hover { filter: brightness(1.08); }
 .cta-note { display: block; color: var(--text-3); font-size: 13px; margin-top: 8px; }
+.disclaimer { color: var(--text-2); font-size: 13px; margin: 14px 0 0; padding: 8px 12px; border-left: 3px solid var(--border); background: var(--surface); border-radius: 0 8px 8px 0; }
 
 .banner {
   background: var(--banner); color: var(--banner-ink); border-radius: 10px;
@@ -160,6 +161,7 @@ footer { color: var(--text-3); font-size: 12.5px; padding: 20px 0 40px; text-ali
     <p class="lede" data-t="lede"></p>
     <a class="cta" id="cta" href="#" target="_blank" rel="noopener"><span data-t="cta"></span> →</a>
     <span class="cta-note" data-t="ctaNote"></span>
+    <p class="disclaimer" data-t="disclaimer"></p>
     <div class="banner" id="demoBanner" hidden></div>
   </header>
 
@@ -247,6 +249,7 @@ const T = {
   zh: {
     title: "近期入境美国情况统计",
     lede: "近期不少同学的美国签证被直接拒签，10043 的覆盖范围可能比以前更广，相关政策也可能在收紧。寒假临近，很多人在考虑是否回国。这里匿名统计最近入境美国的实际情况，供大家判断近期是否适合回国。",
+    disclaimer: "注意：数据是自愿填写，未经核实，不构成法律意见，而且可能有偏差，仅作为参考。",
     cta: "填写我的入境情况", ctaNote: "完全匿名 · 约 2 分钟 · 不收集任何身份信息",
     demo: "⚠️ 当前展示的是演示用的假数据，正式上线后会替换为真实提交。",
     kN: "累计样本", kHeld: "进小黑屋比例", kHeldS: "含最终被拒", kDen: "被拒入境或取消签证", kLast: "近 30 天新增", kLastS: "条记录",
@@ -275,6 +278,7 @@ const T = {
   en: {
     title: "Recent U.S. entry statistics",
     lede: "Many Chinese students have recently had U.S. visas refused outright; PP 10043 may now cover more people, and policy may be tightening. With winter break approaching, many are deciding whether to go home. This page anonymously tracks recent U.S. entry outcomes to help with that decision.",
+    disclaimer: "Note: data are self-reported and unverified, not legal advice, and may be biased. For reference only.",
     cta: "Report my entry", ctaNote: "Fully anonymous · ~2 minutes · no identifying information collected",
     demo: "⚠️ This page currently shows FAKE demo data. It will be replaced with real submissions at launch.",
     kN: "Reports", kHeld: "Sent to secondary", kHeldS: "incl. later denied", kDen: "Denied entry / visa revoked", kLast: "Last 30 days", kLastS: "new reports",
