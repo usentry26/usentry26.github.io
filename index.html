@@ -201,7 +201,7 @@ const T = {
     clear: "清除筛选", fsum: "当前筛选：{n} 例",
     all: "全部",
     f_time: "入境时间", f_port: "入境机场", f_visa: "签证类型", f_vs: "签证情况", f_role: "当前身份",
-    f_mc: "专业大类", f_ms: "专业小类", f_sch: "国内院校", f_stay: "在国内停留", f_o: "入境结果",
+    f_mc: "专业大类", f_ms: "专业小类", f_sch: "国内院校类别", f_u: "国内学校", f_stay: "在国内停留", f_o: "入境结果",
     t_7: "近 1 周", t_14: "近 2 周", t_21: "近 3 周", t_30: "近 1 个月", t_60: "近 2 个月", t_90: "近 3 个月", t_180: "近 6 个月",
     pass: "直接通过", held: "小黑屋后放行", denied: "被拒入境 / 遣返", revoked: "签证被取消",
     k_n: "Case 数", k_of: "占 {p}%", k_held: "进过小黑屋（含被拒）",
@@ -211,7 +211,7 @@ const T = {
     c_mc: "专业大类", c_stem: "STEM 小类", c_non: "非 STEM 小类", c_sch: "国内就读院校", c_schSub: "",
     c_stay: "本次入境前在国内停留", c_q: "被问到的问题", c_qSub: "仅进过小黑屋的 case；多选", c_dur: "在小黑屋待了多久", c_dev: "手机 / 电脑是否被检查",
     cases: "{n} 例", showAll: "展开全部（{n}）", showLess: "收起",
-    uniH: "按国内学校", uniSub: "根据填写的学校名称统计；一个 case 可计入多所学校。为保护隐私，累计不足 {k} 例的学校合并为“其他学校”，且此表不随上方筛选变化。", otherUni: "其他学校（各不足 {k} 例）",
+    uniH: "按国内学校", uniSub: "根据填写的学校名称统计，跟随上方筛选；一个 case 可计入多所学校。为保护隐私，累计不足 {k} 例的学校不单独列出。",
     casesH: "最近的 case", casesSub: "按入境周倒序，只显示粗略信息。",
     th_w: "入境周", th_port: "机场", th_visa: "签证", th_role: "身份", th_major: "专业", th_stay: "国内停留", th_o: "结果", th_dur: "小黑屋时长",
     storyH: "补充经历", storySub: "经审核后公开。", noData: "暂无数据", weekOf: "{d} 当周",
@@ -227,7 +227,7 @@ const T = {
     clear: "Clear filters", fsum: "Filtered: {n} cases",
     all: "All",
     f_time: "Entry date", f_port: "Airport", f_visa: "Visa type", f_vs: "Visa history", f_role: "Status",
-    f_mc: "Field", f_ms: "Sub-field", f_sch: "Chinese university", f_stay: "Time in China", f_o: "Outcome",
+    f_mc: "Field", f_ms: "Sub-field", f_sch: "Univ. category", f_u: "Chinese university", f_stay: "Time in China", f_o: "Outcome",
     t_7: "Last week", t_14: "Last 2 weeks", t_21: "Last 3 weeks", t_30: "Last month", t_60: "Last 2 months", t_90: "Last 3 months", t_180: "Last 6 months",
     pass: "Admitted directly", held: "Secondary, then admitted", denied: "Denied entry / removed", revoked: "Visa revoked",
     k_n: "Cases", k_of: "{p}%", k_held: "Sent to secondary (incl. denied)",
@@ -237,7 +237,7 @@ const T = {
     c_mc: "Field", c_stem: "STEM sub-field", c_non: "Non-STEM sub-field", c_sch: "Chinese university", c_schSub: "",
     c_stay: "Time in China before entry", c_q: "Topics asked", c_qSub: "Secondary cases only; multi-select", c_dur: "Time in secondary", c_dev: "Phone / laptop searched?",
     cases: "{n}", showAll: "Show all ({n})", showLess: "Show less",
-    uniH: "By Chinese university", uniSub: "From the university-name answer; a case may count for several. Universities with fewer than {k} cases are grouped as “Other”, and this table does not follow the filters.", otherUni: "Other universities (< {k} each)",
+    uniH: "By Chinese university", uniSub: "From the university-name answer; follows the filters. A case may count for several. Universities with fewer than {k} cases overall are not listed.",
     casesH: "Recent cases", casesSub: "Newest first; coarse details only.",
     th_w: "Week", th_port: "Airport", th_visa: "Visa", th_role: "Status", th_major: "Field", th_stay: "In China", th_o: "Outcome", th_dur: "Secondary",
     storyH: "Stories", storySub: "Published after review.", noData: "No data yet", weekOf: "Week of {d}",
@@ -250,7 +250,7 @@ const EN = {
   "国防七子 / 军队院校": "Seven Sons / military univ.", "其他可能涉及 10043 的高校": "Other possibly PP 10043-linked univ.", "其他国内高校 / 没有在国内读过大学": "Other / none in China",
   "本科": "Undergraduate", "硕士": "Master's", "博士": "PhD", "博士后": "Postdoc", "访问学者": "Visiting scholar", "工作": "Employed", "其他": "Other",
   "首次签证": "First visa", "续签后首次入境": "First entry after renewal", "用旧签证再次入境": "Re-entry, same visa",
-  "1 个月以内": "< 1 month", "1 到 3 个月": "1–3 months", "3 到 5 个月": "3–5 months", "5 个月以上": "> 5 months", "首次赴美（不适用）": "First trip to U.S.",
+  "1 周以内": "< 1 week", "1 到 2 周": "1–2 weeks", "2 到 4 周": "2–4 weeks", "1 到 2 个月": "1–2 months", "2 到 3 个月": "2–3 months", "3 到 5 个月": "3–5 months", "5 个月以上": "> 5 months", "首次赴美（不适用）": "First trip to U.S.",
   "计算机科学/软件": "CS / software", "AI/机器学习/数据科学": "AI / ML / data", "网络安全": "Cybersecurity",
   "电子电气/通信": "EE / comms", "芯片/半导体/集成电路": "Chips / semiconductors", "航空航天": "Aerospace",
   "机械/机器人/自动化": "Mech. / robotics", "材料科学": "Materials", "核工程/核物理": "Nuclear",
@@ -277,14 +277,14 @@ const ORDER = {
   role: ["本科", "硕士", "博士", "博士后", "访问学者", "工作", "其他"],
   mc: ["STEM", "非 STEM"],
   sch: ["国防七子 / 军队院校", "其他可能涉及 10043 的高校", "其他国内高校 / 没有在国内读过大学"],
-  stay: ["1 个月以内", "1 到 3 个月", "3 到 5 个月", "5 个月以上", "首次赴美（不适用）"],
+  stay: ["1 周以内", "1 到 2 周", "2 到 4 周", "1 到 2 个月", "2 到 3 个月", "3 到 5 个月", "5 个月以上", "首次赴美（不适用）"],
   dur: ["30 分钟以内", "30 分钟到 1 小时", "1 到 3 小时", "3 到 6 小时", "6 小时以上"],
   dev: ["没有", "被要求解锁并当面翻看", "被拿走单独检查", "不确定"],
 };
 const FILTERS = [
   { k: "time", t: "f_time" }, { k: "o", t: "f_o" }, { k: "port", t: "f_port" }, { k: "visa", t: "f_visa" },
   { k: "vs", t: "f_vs" }, { k: "role", t: "f_role" }, { k: "mc", t: "f_mc" }, { k: "ms", t: "f_ms" },
-  { k: "sch", t: "f_sch" }, { k: "stay", t: "f_stay" },
+  { k: "sch", t: "f_sch" }, { k: "u", t: "f_u" }, { k: "stay", t: "f_stay" },
 ];
 
 let lang = "zh", D = null, F = {};
@@ -416,6 +416,7 @@ function renderBody() {
   });
   cards.querySelectorAll("[data-more]").forEach(b => b.onclick = () => { expanded[b.dataset.more] = !expanded[b.dataset.more]; renderBody(); });
   renderCases(rows);
+  renderUnis(rows);
   renderTrend(filtered("time"));
 }
 
@@ -455,20 +456,19 @@ function renderTrend(rows) {
   document.getElementById("tlegend").innerHTML = series.map(([k, c, n]) => `<span><i style="background:var(${c})"></i>${n}</span>`).join("") + `<span><i class="hollow"></i>${t("l_low")}</span>`;
 }
 
-function renderUnis() {
-  const list0 = D.unis || [];
-  document.getElementById("uniSec").hidden = !list0.length;
+function renderUnis(rows) {
+  const list0 = group(rows, "u");
   document.getElementById("uniSub").textContent = t("uniSub", { k: D.min_n || 3 });
   const all = expanded.unis, list = all ? list0 : list0.slice(0, 15);
-  const max = Math.max(1, ...list0.filter(d => d.key !== "__other__").map(d => d.n));
-  const lab = k => k === "__other__" ? t("otherUni", { k: D.min_n || 3 }) : k;
+  const max = Math.max(1, ...list0.map(d => d.n));
   const el = document.getElementById("unis");
+  if (!list0.length) { el.innerHTML = `<div class="empty">${t("noData")}</div>`; return; }
   el.innerHTML = list.map((d, i) => {
     const segs = OUT.map(k => d[k] ? `<span class="s-${k}" style="flex:${d[k]} 0 0;background:var(${OC[k]})">${d[k] / max > .03 ? d[k] : ""}</span>` : "").join("");
-    return `<div class="row uni" data-tip data-i="${i}"><div class="lab">${esc(lab(d.key))}</div><div><div class="bar" style="width:${Math.min(100, Math.max(d.n / max * 100, 2))}%">${segs}</div></div><div class="n">${t("cases", { n: d.n })}</div></div>`;
+    return `<div class="row" data-tip data-i="${i}"><div class="lab">${esc(d.key)}</div><div><div class="bar" style="width:${Math.max(d.n / max * 100, 2)}%">${segs}</div></div><div class="n">${t("cases", { n: d.n })}</div></div>`;
   }).join("") + (list0.length > 15 ? `<button class="more" id="uniMore">${all ? t("showLess") : t("showAll", { n: list0.length })}</button>` : "");
-  el.querySelectorAll(".row").forEach(r => { const d = list[+r.dataset.i]; r._tip = tipHtml(lab(d.key), d); });
-  const b = document.getElementById("uniMore"); if (b) b.onclick = () => { expanded.unis = !expanded.unis; renderUnis(); };
+  el.querySelectorAll(".row").forEach(r => { const d = list[+r.dataset.i]; r._tip = tipHtml(d.key, d); });
+  const b = document.getElementById("uniMore"); if (b) b.onclick = () => { expanded.unis = !expanded.unis; renderUnis(rows); };
 }
 
 function renderCases(rows) {
@@ -492,7 +492,6 @@ function render() {
   const ban = document.getElementById("demoBanner"); ban.hidden = !D.demo; ban.textContent = t("demo");
   renderFilters();
   renderBody();
-  renderUnis();
   document.getElementById("storySec").hidden = !D.stories.length;
   document.getElementById("stories").innerHTML = D.stories.map(s => `<div class="story"><div class="m"><span>${esc(s.month)}</span><span class="pill" style="--c:var(${OC[s.o]})">${t(s.o)}</span>${[s.visa, s.role, s.mc, s.dur].filter(Boolean).map(x => `<span>${esc(L(x))}</span>`).join("")}</div><p>${esc(s.text)}</p></div>`).join("");
 }

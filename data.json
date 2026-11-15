@@ -2,5 +2,6 @@
  "demo": false,
  "updated": "2026-11-15",
  "rows": [],
+ "min_n": 3,
  "stories": []
 }
