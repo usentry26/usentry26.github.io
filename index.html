@@ -230,12 +230,6 @@ footer { color: var(--text-3); font-size: 12.5px; padding: 20px 0 40px; text-ali
     <div class="stories" id="stories"></div>
   </section>
 
-  <section class="card">
-    <details class="about" open>
-      <summary data-t="aboutH"></summary>
-      <ul id="aboutList"></ul>
-    </details>
-  </section>
 
   <footer><span data-t="updated"></span> <span id="updated"></span> · US Entry</footer>
 </div>
@@ -264,14 +258,6 @@ const T = {
     roomH: "小黑屋里发生了什么", roomSubT: "基于 {n} 条进过小黑屋的记录。",
     qH: "被问到的问题（占进小黑屋人数的比例）", durH: "在小黑屋待了多久", devH: "手机或电脑是否被检查",
     storyH: "匿名经历", storySub: "经审核后公开。为保护隐私，只显示月份、签证和身份等粗略信息。", noStory: "暂时还没有公开的经历。",
-    aboutH: "关于数据 · 隐私 · 免责声明",
-    about: [
-      "数据来自自愿匿名填写的问卷，<b>存在偏差</b>：遇到问题的人更愿意来填，所以这里的小黑屋比例很可能高于真实情况。请看趋势和对比，不要把比例当作个人概率。",
-      "我们<b>不收集</b>姓名、护照号、联系方式、学校名或 IP。网站只公开汇总后的统计数字；少于 {k} 条的分类会被合并，避免反推出个人。",
-      "带 <span style='color:var(--text-3)'>灰色</span> 的行样本较少（少于 10 条），比例仅供参考。",
-      "本网站不构成任何法律建议。遇到入境问题请联系学校国际学生办公室（ISSS / OIA）或移民律师。",
-      "数据定期手动更新。"
-    ],
     updated: "最后更新：", rate: "小黑屋", records: "条", of: "共",
     showAll: "展开全部", showLess: "收起", n: "样本", pct: "比例"
   },
@@ -293,14 +279,6 @@ const T = {
     roomH: "What happens in secondary", roomSubT: "Based on {n} reports that went to secondary inspection.",
     qH: "Topics asked about (share of secondary cases)", durH: "Time spent in secondary", devH: "Phone / laptop searched?",
     storyH: "Anonymous stories", storySub: "Published after review. Only coarse details (month, visa, status) are shown.", noStory: "No published stories yet.",
-    aboutH: "About the data · Privacy · Disclaimer",
-    about: [
-      "Data are self-reported and <b>biased</b>: people with problems are more likely to report, so rates here likely overstate reality. Read trends and comparisons, not personal odds.",
-      "We do <b>not</b> collect names, passport numbers, contact info, school names or IPs. Only aggregates are published; categories with fewer than {k} reports are merged.",
-      "Rows in <span style='color:var(--text-3)'>gray</span> have fewer than 10 reports — treat with caution.",
-      "Nothing here is legal advice. Contact your school's international office or an immigration attorney.",
-      "Data are updated manually on a regular basis."
-    ],
     updated: "Last updated:", rate: "secondary", records: "", of: "of",
     showAll: "Show all", showLess: "Show less", n: "n", pct: "Share"
   }
@@ -462,7 +440,6 @@ function render() {
   barRows(document.getElementById("durations"), D.durations, D.held_n);
   barRows(document.getElementById("devices"), D.devices, D.held_n);
   stories(document.getElementById("stories"), D.stories);
-  document.getElementById("aboutList").innerHTML = t("about").map(x => `<li>${x.replace("{k}", D.min_n)}</li>`).join("");
   document.getElementById("updated").textContent = D.updated;
 }
 
