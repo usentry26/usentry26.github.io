@@ -41,7 +41,7 @@ STEM_SUB = ["计算机科学/软件", "AI/机器学习/数据科学", "网络安
             "生物/生物医学/生物工程", "医学/药学/公共卫生", "土木/环境/能源", "其他 STEM"]
 NONSTEM_SUB = ["商科/金融/会计", "经济", "法律", "政治/国际关系", "教育", "传媒/新闻",
                "文学/语言/历史/哲学", "社会学/心理学", "艺术/设计/建筑", "其他非 STEM"]
-SCHOOLS = ["国防七子", "其他军工背景高校", "其他国内高校", "没有在国内读过大学"]
+SCHOOLS = ["国防七子 / 军队院校", "其他可能涉及 10043 的高校", "其他国内高校 / 没有在国内读过大学"]
 OUTCOMES = ["pass", "held", "denied", "revoked"]
 DURATIONS = ["30 分钟以内", "30 分钟到 1 小时", "1 到 3 小时", "3 到 6 小时", "6 小时以上"]
 QUESTIONS = ["研究方向", "导师背景", "国内院校与科研经历", "资助来源（如 CSC）",
@@ -165,7 +165,7 @@ def read_export(path):
             "major_cat": cat,
             "major_sub": pick(sub_raw, NONSTEM_SUB if cat == "非 STEM" else STEM_SUB,
                               "其他非 STEM" if cat == "非 STEM" else "其他 STEM"),
-            "schools": [pick(x, SCHOOLS) for x in multi(row, "院校类型")],
+            "schools": [pick(x, SCHOOLS) for x in multi(row, "就读过的院校")],
             "outcome": norm_outcome(g("入境结果")),
             "duration": pick(g("待了多久"), DURATIONS, None),
             "questions": [pick(x, QUESTIONS) for x in multi(row, "哪些问题")],
@@ -193,8 +193,8 @@ def fake_records(n=420, seed=7):
         role = rnd.choices(ROLES, [22, 30, 30, 8, 5, 4, 1])[0]
         cat = rnd.choices(["STEM", "非 STEM"], [68, 32])[0]
         sub = rnd.choice(STEM_SUB if cat == "STEM" else NONSTEM_SUB)
-        school = rnd.choices(SCHOOLS, [7, 8, 70, 15])[0]
-        risk = 0.08 + (0.10 if cat == "STEM" else 0) + (0.25 if school in SCHOOLS[:2] else 0) \
+        school = rnd.choices(SCHOOLS, [8, 12, 80])[0]
+        risk = 0.08 + (0.10 if cat == "STEM" else 0) + (0.30 if school == SCHOOLS[0] else 0.15 if school == SCHOOLS[1] else 0) \
             + (0.12 if sub in ("芯片/半导体/集成电路", "航空航天", "核工程/核物理", "AI/机器学习/数据科学", "网络安全") else 0) \
             + (0.05 if role in GRAD_ROLES else 0)
         r = rnd.random()
