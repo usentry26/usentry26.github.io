@@ -1,0 +1,960 @@
+{
+ "demo": true,
+ "updated": "2026-11-15",
+ "min_n": 3,
+ "summary": {
+  "n": 420,
+  "pass": 321,
+  "held": 80,
+  "denied": 19,
+  "revoked": 10,
+  "last30": 52
+ },
+ "trend": [
+  {
+   "week": "2026-05-18",
+   "n": 3,
+   "pass": 3,
+   "held": 0,
+   "denied": 0
+  },
+  {
+   "week": "2026-05-25",
+   "n": 5,
+   "pass": 3,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "week": "2026-06-01",
+   "n": 6,
+   "pass": 5,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "week": "2026-06-08",
+   "n": 6,
+   "pass": 6,
+   "held": 0,
+   "denied": 0
+  },
+  {
+   "week": "2026-06-15",
+   "n": 12,
+   "pass": 8,
+   "held": 3,
+   "denied": 1
+  },
+  {
+   "week": "2026-06-22",
+   "n": 15,
+   "pass": 12,
+   "held": 2,
+   "denied": 1
+  },
+  {
+   "week": "2026-06-29",
+   "n": 15,
+   "pass": 11,
+   "held": 3,
+   "denied": 1
+  },
+  {
+   "week": "2026-07-06",
+   "n": 7,
+   "pass": 6,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "week": "2026-07-13",
+   "n": 16,
+   "pass": 12,
+   "held": 4,
+   "denied": 0
+  },
+  {
+   "week": "2026-07-20",
+   "n": 21,
+   "pass": 17,
+   "held": 3,
+   "denied": 1
+  },
+  {
+   "week": "2026-07-27",
+   "n": 11,
+   "pass": 10,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "week": "2026-08-03",
+   "n": 11,
+   "pass": 8,
+   "held": 0,
+   "denied": 3
+  },
+  {
+   "week": "2026-08-10",
+   "n": 21,
+   "pass": 16,
+   "held": 4,
+   "denied": 1
+  },
+  {
+   "week": "2026-08-17",
+   "n": 17,
+   "pass": 13,
+   "held": 2,
+   "denied": 2
+  },
+  {
+   "week": "2026-08-24",
+   "n": 25,
+   "pass": 15,
+   "held": 6,
+   "denied": 4
+  },
+  {
+   "week": "2026-08-31",
+   "n": 14,
+   "pass": 8,
+   "held": 4,
+   "denied": 2
+  },
+  {
+   "week": "2026-09-07",
+   "n": 23,
+   "pass": 16,
+   "held": 7,
+   "denied": 0
+  },
+  {
+   "week": "2026-09-14",
+   "n": 23,
+   "pass": 18,
+   "held": 5,
+   "denied": 0
+  },
+  {
+   "week": "2026-09-21",
+   "n": 26,
+   "pass": 18,
+   "held": 7,
+   "denied": 1
+  },
+  {
+   "week": "2026-09-28",
+   "n": 28,
+   "pass": 22,
+   "held": 6,
+   "denied": 0
+  },
+  {
+   "week": "2026-10-05",
+   "n": 31,
+   "pass": 26,
+   "held": 4,
+   "denied": 1
+  },
+  {
+   "week": "2026-10-12",
+   "n": 33,
+   "pass": 25,
+   "held": 7,
+   "denied": 1
+  },
+  {
+   "week": "2026-10-19",
+   "n": 17,
+   "pass": 14,
+   "held": 3,
+   "denied": 0
+  },
+  {
+   "week": "2026-10-26",
+   "n": 17,
+   "pass": 14,
+   "held": 3,
+   "denied": 0
+  },
+  {
+   "week": "2026-11-02",
+   "n": 7,
+   "pass": 6,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "week": "2026-11-09",
+   "n": 4,
+   "pass": 3,
+   "held": 1,
+   "denied": 0
+  }
+ ],
+ "by_school_grad": [
+  {
+   "key": "国防七子或军工背景",
+   "n": 39,
+   "pass": 19,
+   "held": 16,
+   "denied": 4
+  },
+  {
+   "key": "其他国内高校",
+   "n": 217,
+   "pass": 172,
+   "held": 35,
+   "denied": 10
+  },
+  {
+   "key": "没有在国内读过大学",
+   "n": 40,
+   "pass": 29,
+   "held": 10,
+   "denied": 1
+  }
+ ],
+ "by_major_cat": [
+  {
+   "key": "STEM",
+   "n": 287,
+   "pass": 211,
+   "held": 60,
+   "denied": 16
+  },
+  {
+   "key": "非 STEM",
+   "n": 133,
+   "pass": 110,
+   "held": 20,
+   "denied": 3
+  }
+ ],
+ "by_stem_sub": [
+  {
+   "key": "核工程/核物理",
+   "n": 24,
+   "pass": 16,
+   "held": 7,
+   "denied": 1
+  },
+  {
+   "key": "医学/药学/公共卫生",
+   "n": 22,
+   "pass": 17,
+   "held": 3,
+   "denied": 2
+  },
+  {
+   "key": "土木/环境/能源",
+   "n": 21,
+   "pass": 16,
+   "held": 3,
+   "denied": 2
+  },
+  {
+   "key": "AI/机器学习/数据科学",
+   "n": 20,
+   "pass": 15,
+   "held": 3,
+   "denied": 2
+  },
+  {
+   "key": "计算机科学/软件",
+   "n": 20,
+   "pass": 12,
+   "held": 7,
+   "denied": 1
+  },
+  {
+   "key": "航空航天",
+   "n": 20,
+   "pass": 11,
+   "held": 8,
+   "denied": 1
+  },
+  {
+   "key": "材料科学",
+   "n": 19,
+   "pass": 12,
+   "held": 6,
+   "denied": 1
+  },
+  {
+   "key": "化学/化工",
+   "n": 19,
+   "pass": 16,
+   "held": 2,
+   "denied": 1
+  },
+  {
+   "key": "机械/机器人/自动化",
+   "n": 19,
+   "pass": 16,
+   "held": 3,
+   "denied": 0
+  },
+  {
+   "key": "其他 STEM",
+   "n": 18,
+   "pass": 14,
+   "held": 4,
+   "denied": 0
+  },
+  {
+   "key": "数学/统计",
+   "n": 17,
+   "pass": 13,
+   "held": 3,
+   "denied": 1
+  },
+  {
+   "key": "网络安全",
+   "n": 16,
+   "pass": 13,
+   "held": 2,
+   "denied": 1
+  },
+  {
+   "key": "电子电气/通信",
+   "n": 15,
+   "pass": 13,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "key": "物理/天文",
+   "n": 14,
+   "pass": 10,
+   "held": 4,
+   "denied": 0
+  },
+  {
+   "key": "芯片/半导体/集成电路",
+   "n": 12,
+   "pass": 10,
+   "held": 0,
+   "denied": 2
+  },
+  {
+   "key": "生物/生物医学/生物工程",
+   "n": 11,
+   "pass": 7,
+   "held": 3,
+   "denied": 1
+  }
+ ],
+ "by_nonstem_sub": [
+  {
+   "key": "经济",
+   "n": 21,
+   "pass": 20,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "key": "艺术/设计/建筑",
+   "n": 17,
+   "pass": 14,
+   "held": 3,
+   "denied": 0
+  },
+  {
+   "key": "法律",
+   "n": 16,
+   "pass": 12,
+   "held": 3,
+   "denied": 1
+  },
+  {
+   "key": "文学/语言/历史/哲学",
+   "n": 15,
+   "pass": 14,
+   "held": 0,
+   "denied": 1
+  },
+  {
+   "key": "商科/金融/会计",
+   "n": 13,
+   "pass": 10,
+   "held": 2,
+   "denied": 1
+  },
+  {
+   "key": "社会学/心理学",
+   "n": 12,
+   "pass": 11,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "key": "政治/国际关系",
+   "n": 11,
+   "pass": 9,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "key": "教育",
+   "n": 10,
+   "pass": 7,
+   "held": 3,
+   "denied": 0
+  },
+  {
+   "key": "传媒/新闻",
+   "n": 9,
+   "pass": 9,
+   "held": 0,
+   "denied": 0
+  },
+  {
+   "key": "其他非 STEM",
+   "n": 9,
+   "pass": 4,
+   "held": 5,
+   "denied": 0
+  }
+ ],
+ "by_role": [
+  {
+   "key": "本科",
+   "n": 103,
+   "pass": 82,
+   "held": 17,
+   "denied": 4
+  },
+  {
+   "key": "硕士",
+   "n": 120,
+   "pass": 87,
+   "held": 28,
+   "denied": 5
+  },
+  {
+   "key": "博士",
+   "n": 127,
+   "pass": 100,
+   "held": 23,
+   "denied": 4
+  },
+  {
+   "key": "博士后",
+   "n": 31,
+   "pass": 23,
+   "held": 4,
+   "denied": 4
+  },
+  {
+   "key": "访问学者",
+   "n": 18,
+   "pass": 10,
+   "held": 6,
+   "denied": 2
+  },
+  {
+   "key": "工作",
+   "n": 16,
+   "pass": 15,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "key": "其他",
+   "n": 5,
+   "pass": 4,
+   "held": 1,
+   "denied": 0
+  }
+ ],
+ "by_visa": [
+  {
+   "key": "F-1",
+   "n": 300,
+   "pass": 227,
+   "held": 61,
+   "denied": 12
+  },
+  {
+   "key": "J-1",
+   "n": 47,
+   "pass": 39,
+   "held": 8,
+   "denied": 0
+  },
+  {
+   "key": "H-1B",
+   "n": 33,
+   "pass": 24,
+   "held": 6,
+   "denied": 3
+  },
+  {
+   "key": "B1/B2",
+   "n": 26,
+   "pass": 21,
+   "held": 3,
+   "denied": 2
+  },
+  {
+   "key": "O-1",
+   "n": 8,
+   "pass": 5,
+   "held": 2,
+   "denied": 1
+  },
+  {
+   "key": "其他",
+   "n": 6,
+   "pass": 5,
+   "held": 0,
+   "denied": 1
+  }
+ ],
+ "by_visa_status": [
+  {
+   "key": "首次签证",
+   "n": 208,
+   "pass": 163,
+   "held": 36,
+   "denied": 9
+  },
+  {
+   "key": "续签后首次入境",
+   "n": 87,
+   "pass": 66,
+   "held": 17,
+   "denied": 4
+  },
+  {
+   "key": "用旧签证再次入境",
+   "n": 125,
+   "pass": 92,
+   "held": 27,
+   "denied": 6
+  }
+ ],
+ "by_port": [
+  {
+   "key": "LAX 洛杉矶",
+   "n": 69,
+   "pass": 55,
+   "held": 10,
+   "denied": 4
+  },
+  {
+   "key": "SFO 旧金山",
+   "n": 47,
+   "pass": 35,
+   "held": 10,
+   "denied": 2
+  },
+  {
+   "key": "JFK 纽约肯尼迪",
+   "n": 37,
+   "pass": 29,
+   "held": 5,
+   "denied": 3
+  },
+  {
+   "key": "ORD 芝加哥",
+   "n": 36,
+   "pass": 25,
+   "held": 9,
+   "denied": 2
+  },
+  {
+   "key": "BOS 波士顿",
+   "n": 32,
+   "pass": 23,
+   "held": 8,
+   "denied": 1
+  },
+  {
+   "key": "EWR 纽瓦克",
+   "n": 26,
+   "pass": 20,
+   "held": 6,
+   "denied": 0
+  },
+  {
+   "key": "SEA 西雅图",
+   "n": 26,
+   "pass": 23,
+   "held": 2,
+   "denied": 1
+  },
+  {
+   "key": "IAD 华盛顿杜勒斯",
+   "n": 18,
+   "pass": 13,
+   "held": 3,
+   "denied": 2
+  },
+  {
+   "key": "DTW 底特律",
+   "n": 17,
+   "pass": 15,
+   "held": 1,
+   "denied": 1
+  },
+  {
+   "key": "DFW 达拉斯",
+   "n": 17,
+   "pass": 12,
+   "held": 3,
+   "denied": 2
+  },
+  {
+   "key": "IAH 休斯顿",
+   "n": 16,
+   "pass": 14,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "key": "ATL 亚特兰大",
+   "n": 13,
+   "pass": 13,
+   "held": 0,
+   "denied": 0
+  },
+  {
+   "key": "MIA 迈阿密",
+   "n": 9,
+   "pass": 7,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "key": "HNL 檀香山",
+   "n": 8,
+   "pass": 5,
+   "held": 3,
+   "denied": 0
+  },
+  {
+   "key": "SJC 圣何塞",
+   "n": 7,
+   "pass": 6,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "key": "加拿大预清关（温哥华/多伦多等）",
+   "n": 6,
+   "pass": 4,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "key": "PHX 凤凰城",
+   "n": 5,
+   "pass": 3,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "key": "陆路口岸",
+   "n": 5,
+   "pass": 1,
+   "held": 3,
+   "denied": 1
+  },
+  {
+   "key": "SLC 盐湖城",
+   "n": 5,
+   "pass": 3,
+   "held": 2,
+   "denied": 0
+  },
+  {
+   "key": "其他地点预清关（都柏林/阿布扎比等）",
+   "n": 4,
+   "pass": 3,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "key": "SAN 圣地亚哥",
+   "n": 4,
+   "pass": 4,
+   "held": 0,
+   "denied": 0
+  },
+  {
+   "key": "PHL 费城",
+   "n": 4,
+   "pass": 1,
+   "held": 3,
+   "denied": 0
+  },
+  {
+   "key": "CLT 夏洛特",
+   "n": 3,
+   "pass": 3,
+   "held": 0,
+   "denied": 0
+  },
+  {
+   "key": "LAS 拉斯维加斯",
+   "n": 3,
+   "pass": 2,
+   "held": 1,
+   "denied": 0
+  },
+  {
+   "key": "其他（样本较少）",
+   "n": 3,
+   "pass": 2,
+   "held": 1,
+   "denied": 0
+  }
+ ],
+ "by_stay": [
+  {
+   "key": "1 个月以内",
+   "n": 128,
+   "pass": 98,
+   "held": 26,
+   "denied": 4
+  },
+  {
+   "key": "1 到 3 个月",
+   "n": 154,
+   "pass": 119,
+   "held": 26,
+   "denied": 9
+  },
+  {
+   "key": "3 到 5 个月",
+   "n": 69,
+   "pass": 54,
+   "held": 13,
+   "denied": 2
+  },
+  {
+   "key": "5 个月以上",
+   "n": 20,
+   "pass": 13,
+   "held": 6,
+   "denied": 1
+  },
+  {
+   "key": "首次赴美（不适用）",
+   "n": 49,
+   "pass": 37,
+   "held": 9,
+   "denied": 3
+  }
+ ],
+ "held_n": 99,
+ "questions": [
+  {
+   "key": "家人职业",
+   "n": 41
+  },
+  {
+   "key": "查看微信或社交媒体",
+   "n": 40
+  },
+  {
+   "key": "与军方或军工单位的联系",
+   "n": 39
+  },
+  {
+   "key": "导师背景",
+   "n": 35
+  },
+  {
+   "key": "毕业后是否回国",
+   "n": 35
+  },
+  {
+   "key": "之前的出入境记录",
+   "n": 33
+  },
+  {
+   "key": "资助来源（如 CSC）",
+   "n": 32
+  },
+  {
+   "key": "和某人或某机构的关系",
+   "n": 32
+  },
+  {
+   "key": "研究方向",
+   "n": 31
+  },
+  {
+   "key": "国内院校与科研经历",
+   "n": 29
+  },
+  {
+   "key": "本人或家人是否是党员",
+   "n": 25
+  }
+ ],
+ "durations": [
+  {
+   "key": "30 分钟以内",
+   "n": 19
+  },
+  {
+   "key": "30 分钟到 1 小时",
+   "n": 16
+  },
+  {
+   "key": "1 到 3 小时",
+   "n": 37
+  },
+  {
+   "key": "3 到 6 小时",
+   "n": 17
+  },
+  {
+   "key": "6 小时以上",
+   "n": 10
+  }
+ ],
+ "devices": [
+  {
+   "key": "没有",
+   "n": 41
+  },
+  {
+   "key": "被要求解锁并当面翻看",
+   "n": 40
+  },
+  {
+   "key": "被拿走单独检查",
+   "n": 13
+  },
+  {
+   "key": "不确定",
+   "n": 5
+  }
+ ],
+ "stories": [
+  {
+   "month": "2026-10",
+   "visa": "F-1",
+   "role": "博士后",
+   "major_cat": "STEM",
+   "outcome": "pass",
+   "duration": null,
+   "text": "【示例】排队比较久，但边检官员态度很好，直接通过。"
+  },
+  {
+   "month": "2026-10",
+   "visa": "F-1",
+   "role": "硕士",
+   "major_cat": "STEM",
+   "outcome": "held",
+   "duration": "3 到 6 小时",
+   "text": "【示例】海关让解锁手机看了微信聊天记录，问了本科学校，大概两个小时后放行。"
+  },
+  {
+   "month": "2026-10",
+   "visa": "J-1",
+   "role": "博士",
+   "major_cat": "非 STEM",
+   "outcome": "pass",
+   "duration": null,
+   "text": "【示例】很顺利，只问了学校和专业，不到一分钟。"
+  },
+  {
+   "month": "2026-10",
+   "visa": "F-1",
+   "role": "博士后",
+   "major_cat": "STEM",
+   "outcome": "pass",
+   "duration": null,
+   "text": "【示例】排队比较久，但边检官员态度很好，直接通过。"
+  },
+  {
+   "month": "2026-10",
+   "visa": "F-1",
+   "role": "本科",
+   "major_cat": "非 STEM",
+   "outcome": "pass",
+   "duration": null,
+   "text": "【示例】很顺利，只问了学校和专业，不到一分钟。"
+  },
+  {
+   "month": "2026-10",
+   "visa": "F-1",
+   "role": "访问学者",
+   "major_cat": "STEM",
+   "outcome": "pass",
+   "duration": null,
+   "text": "【示例】很顺利，只问了学校和专业，不到一分钟。"
+  },
+  {
+   "month": "2026-09",
+   "visa": "H-1B",
+   "role": "博士后",
+   "major_cat": "STEM",
+   "outcome": "revoked",
+   "duration": "1 到 3 小时",
+   "text": "【示例】问了国内实验室和导师的项目，最后签证被当场取消。"
+  },
+  {
+   "month": "2026-09",
+   "visa": "F-1",
+   "role": "博士",
+   "major_cat": "STEM",
+   "outcome": "held",
+   "duration": "30 分钟到 1 小时",
+   "text": "【示例】海关让解锁手机看了微信聊天记录，问了本科学校，大概两个小时后放行。"
+  },
+  {
+   "month": "2026-08",
+   "visa": "F-1",
+   "role": "本科",
+   "major_cat": "STEM",
+   "outcome": "held",
+   "duration": "6 小时以上",
+   "text": "【示例】海关让解锁手机看了微信聊天记录，问了本科学校，大概两个小时后放行。"
+  },
+  {
+   "month": "2026-08",
+   "visa": "F-1",
+   "role": "本科",
+   "major_cat": "非 STEM",
+   "outcome": "denied",
+   "duration": "30 分钟以内",
+   "text": "【示例】被问是否是党员、家里人做什么工作，最后被拒入境并原机返回。"
+  },
+  {
+   "month": "2026-07",
+   "visa": "F-1",
+   "role": "博士",
+   "major_cat": "STEM",
+   "outcome": "pass",
+   "duration": null,
+   "text": "【示例】很顺利，只问了学校和专业，不到一分钟。"
+  },
+  {
+   "month": "2026-05",
+   "visa": "F-1",
+   "role": "本科",
+   "major_cat": "STEM",
+   "outcome": "held",
+   "duration": "1 到 3 小时",
+   "text": "【示例】被问了很久研究方向和导师的项目经费来源，最后放行。"
+  },
+  {
+   "month": "2026-05",
+   "visa": "F-1",
+   "role": "本科",
+   "major_cat": "非 STEM",
+   "outcome": "pass",
+   "duration": null,
+   "text": "【示例】排队比较久，但边检官员态度很好，直接通过。"
+  }
+ ]
+}

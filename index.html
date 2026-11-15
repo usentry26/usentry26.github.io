@@ -476,7 +476,7 @@ document.getElementById("themeBtn").onclick = () => {
 };
 
 render();
-fetch("data.json", { cache: "no-cache" }).then(r => r.json()).then(d => { D = d; render(); })
+fetch(new URLSearchParams(location.search).has("demo") ? "demo.json" : "data.json", { cache: "no-cache" }).then(r => r.json()).then(d => { D = d; render(); })
   .catch(() => { document.getElementById("kpis").innerHTML = `<p class="note">数据加载失败 / Failed to load data.</p>`; });
 </script>
 </body>

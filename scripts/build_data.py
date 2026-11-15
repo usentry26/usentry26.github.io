@@ -318,14 +318,16 @@ def main():
     ap.add_argument("export", nargs="?", help="腾讯问卷 export (.xlsx / .csv)")
     ap.add_argument("--demo", action="store_true", help="generate fake demo data instead")
     ap.add_argument("--empty", action="store_true", help="write an empty dataset (launch state)")
+    ap.add_argument("--out", default=str(OUT), help="output path (default data.json)")
     a = ap.parse_args()
     if not (a.demo or a.empty or a.export):
         ap.error("give an export file, --demo or --empty")
     recs = fake_records() if a.demo else ([] if a.empty else read_export(a.export))
     data = aggregate(recs, a.demo)
-    OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+    out = Path(a.out)
+    out.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     s = data["summary"]
-    print(f"wrote {OUT}  records={s['n']}  held={s['held']}  denied/revoked={s['denied']}  "
+    print(f"wrote {out}  records={s['n']}  held={s['held']}  denied/revoked={s['denied']}  "
           f"stories={len(data['stories'])}{'  (DEMO)' if a.demo else ''}")
 
 
