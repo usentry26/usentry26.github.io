@@ -195,7 +195,7 @@ const T = {
     all: "全部",
     f_time: "入境时间", f_port: "入境机场", f_visa: "签证类型", f_vs: "签证情况", f_role: "当前身份",
     f_mc: "专业大类", f_ms: "专业小类", f_sch: "国内院校", f_stay: "在国内停留", f_o: "入境结果",
-    t_14: "近 2 周", t_30: "近 30 天", t_90: "近 90 天",
+    t_7: "近 1 周", t_14: "近 2 周", t_21: "近 3 周", t_30: "近 1 个月", t_60: "近 2 个月", t_90: "近 3 个月", t_180: "近 6 个月",
     pass: "直接通过", held: "小黑屋后放行", denied: "被拒入境 / 遣返", revoked: "签证被取消",
     k_n: "Case 数", k_of: "占 {p}%", k_held: "进过小黑屋（含被拒）",
     trendH: "入境情况随时间变化", trendSub: "每周一个点，跟随上方筛选（入境时间筛选除外）。空心点表示该周样本少于 5 例，参考价值较低；底部灰条为每周样本数。",
@@ -220,7 +220,7 @@ const T = {
     all: "All",
     f_time: "Entry date", f_port: "Airport", f_visa: "Visa type", f_vs: "Visa history", f_role: "Status",
     f_mc: "Field", f_ms: "Sub-field", f_sch: "Chinese university", f_stay: "Time in China", f_o: "Outcome",
-    t_14: "Last 2 weeks", t_30: "Last 30 days", t_90: "Last 90 days",
+    t_7: "Last week", t_14: "Last 2 weeks", t_21: "Last 3 weeks", t_30: "Last month", t_60: "Last 2 months", t_90: "Last 3 months", t_180: "Last 6 months",
     pass: "Admitted directly", held: "Secondary, then admitted", denied: "Denied entry / removed", revoked: "Visa revoked",
     k_n: "Cases", k_of: "{p}%", k_held: "Sent to secondary (incl. denied)",
     trendH: "Entry outcomes over time", trendSub: "One point per week; follows the filters above (except entry date). Hollow points = fewer than 5 reports that week; gray bars = weekly sample size.",
@@ -291,10 +291,11 @@ const vals = (r, k) => Array.isArray(r[k]) ? r[k] : (r[k] == null ? [] : [r[k]])
 const fmtWeek = s => { const d = new Date(s + "T00:00:00"); return lang === "zh" ? `${d.getMonth() + 1}/${d.getDate()}` : d.toLocaleDateString("en-US", { month: "short", day: "numeric" }); };
 const isoDate = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
+const TIMES = { t_7: 7, t_14: 14, t_21: 21, t_30: 30, t_60: 60, t_90: 90, t_180: 180 };
 function today() { return D && D.updated ? new Date(D.updated + "T00:00:00") : new Date(); }
 function inTime(r, v) {
   if (!v) return true;
-  const days = { t_14: 14, t_30: 30, t_90: 90 }[v];
+  const days = TIMES[v];
   const wkEnd = new Date(r.w + "T00:00:00"); wkEnd.setDate(wkEnd.getDate() + 6);
   return (today() - wkEnd) / 864e5 < days;
 }
@@ -367,7 +368,7 @@ function renderFilters() {
   const el = document.getElementById("filters");
   el.innerHTML = FILTERS.map(f => {
     let opts;
-    if (f.k === "time") opts = ["t_14", "t_30", "t_90"].map(v => [v, `${t(v)} (${D.rows.filter(r => inTime(r, v)).length})`]);
+    if (f.k === "time") opts = Object.keys(TIMES).map(v => [v, `${t(v)} (${D.rows.filter(r => inTime(r, v)).length})`]);
     else if (f.k === "o") opts = OUT.map(v => [v, `${t(v)} (${D.rows.filter(r => r.o === v).length})`]);
     else opts = group(D.rows, f.k, ORDER[f.k]).map(d => [d.key, `${L(d.key)} (${d.n})`]);
     return `<div><label>${t(f.t)}</label><select data-f="${f.k}"><option value="">${t("all")}</option>${opts.map(([v, l]) => `<option value="${esc(v)}"${F[f.k] === v ? " selected" : ""}>${esc(l)}</option>`).join("")}</select></div>`;
