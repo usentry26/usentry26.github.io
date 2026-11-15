@@ -249,7 +249,6 @@ const T = {
     lede: "近期不少同学的美国签证被直接拒签，10043 的覆盖范围可能比以前更广，相关政策也可能在收紧。寒假临近，很多人在考虑是否回国。这里匿名统计最近入境美国的实际情况，供大家判断近期是否适合回国。",
     cta: "填写我的入境情况", ctaNote: "完全匿名 · 约 2 分钟 · 不收集任何身份信息",
     demo: "⚠️ 当前展示的是演示用的假数据，正式上线后会替换为真实提交。",
-    empty: "📮 刚刚上线，还没有数据——欢迎成为第一个分享入境经历的人！数据会定期汇总更新到这里。",
     kN: "累计样本", kHeld: "进小黑屋比例", kHeldS: "含最终被拒", kDen: "被拒入境或取消签证", kLast: "近 30 天新增", kLastS: "条记录",
     pass: "直接通过", held: "小黑屋后放行", denied: "被拒入境 / 取消签证",
     trendH: "每周入境记录", trendSub: "按入境日期所在的周统计，最近 26 周。",
@@ -278,7 +277,6 @@ const T = {
     lede: "Many Chinese students have recently had U.S. visas refused outright; PP 10043 may now cover more people, and policy may be tightening. With winter break approaching, many are deciding whether to go home. This page anonymously tracks recent U.S. entry outcomes to help with that decision.",
     cta: "Report my entry", ctaNote: "Fully anonymous · ~2 minutes · no identifying information collected",
     demo: "⚠️ This page currently shows FAKE demo data. It will be replaced with real submissions at launch.",
-    empty: "📮 Just launched — no reports yet. Be the first to share your entry experience! Results are aggregated here regularly.",
     kN: "Reports", kHeld: "Sent to secondary", kHeldS: "incl. later denied", kDen: "Denied entry / visa revoked", kLast: "Last 30 days", kLastS: "new reports",
     pass: "Admitted directly", held: "Secondary, then admitted", denied: "Denied entry / visa revoked",
     trendH: "Weekly entry reports", trendSub: "Grouped by week of entry date, last 26 weeks.",
@@ -436,8 +434,8 @@ function render() {
 
   const s = D.summary;
   const banner = document.getElementById("demoBanner");
-  banner.hidden = !(D.demo || s.n === 0);
-  banner.textContent = D.demo ? t("demo") : t("empty");
+  banner.hidden = !D.demo;
+  banner.textContent = t("demo");
   document.getElementById("kpis").innerHTML = [
     [s.n, t("kN"), ""],
     [pct(s.held + s.denied, s.n) + "%", t("kHeld"), t("kHeldS")],
