@@ -126,10 +126,28 @@ def read_export(path):
     c = {k: find_col(cols, k) for k in
          ["入境日期", "入境机场", "签证类型", "签证情况", "当前身份", "专业大类",
           "入境结果", "待了多久", "手机", "补充", "公开"]}
+    if c["签证情况"] is None:
+        c["签证情况"] = find_col(cols, "签证") if find_col(cols, "签证") != c["签证类型"] else None
     c_stem = find_col(cols, "STEM", "小类")
     c_non = find_col(cols, "非 STEM", "小类") or find_col(cols, "非STEM", "小类")
     if c_stem == c_non:
         c_stem = next((x for x in cols if "小类" in str(x) and "非" not in str(x)), None)
+
+    # 个人ID：同一 ID 只保留最后一次提交；最后一次勾了“请删除”的整条丢弃
+    c_id = find_col(cols, "个人ID") or find_col(cols, "ID")
+    c_del = find_col(cols, "删除")
+    c_time = find_col(cols, "提交时间") or find_col(cols, "结束答题时间") or find_col(cols, "答题时间")
+    df = df.reset_index(drop=True)
+    df["_order"] = range(len(df))
+    if c_time is not None:
+        df["_t"] = pd.to_datetime(df[c_time], errors="coerce")
+        df = df.sort_values(["_t", "_order"], na_position="first")
+    if c_id is not None:
+        ids = df[c_id].astype(str).str.strip().str.lower()
+        has_id = ids.ne("") & ids.ne("nan")
+        df = pd.concat([df[~has_id], df[has_id].assign(_id=ids[has_id]).drop_duplicates("_id", keep="last")])
+    if c_del is not None:
+        df = df[~df[c_del].astype(str).str.contains("删除")]
 
     recs = []
     for _, row in df.iterrows():
