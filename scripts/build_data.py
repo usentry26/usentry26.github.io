@@ -49,6 +49,46 @@ MULTI_SEP = re.compile(r"[┋|;；,，、\n]+")
 
 # ---------------------------------------------------------------- normalising
 
+# 国内学校名称归一：canonical -> 常见简称/英文缩写（大小写不敏感，整词匹配）
+UNI_ALIASES = {
+    "北京航空航天大学": ["北航", "北京航天航空大学", "BUAA"], "北京理工大学": ["北理工", "北理", "BIT"],
+    "哈尔滨工业大学": ["哈工大", "哈尔滨工业大学（深圳）", "哈尔滨工业大学（威海）", "HIT"], "哈尔滨工程大学": ["哈工程", "HEU", "HRBEU"],
+    "西北工业大学": ["西工大", "NPU", "NWPU"], "南京航空航天大学": ["南航", "NUAA"], "南京理工大学": ["南理工", "NJUST"],
+    "国防科技大学": ["国防科大", "NUDT"], "清华大学": ["清华", "THU", "Tsinghua"], "北京大学": ["北大", "PKU"],
+    "浙江大学": ["浙大", "ZJU"], "上海交通大学": ["上交", "上海交大", "SJTU"], "复旦大学": ["复旦", "FDU"],
+    "中国科学技术大学": ["中科大", "USTC"], "南京大学": ["南大", "NJU"], "武汉大学": ["武大", "WHU"],
+    "华中科技大学": ["华科", "华中科大", "HUST"], "西安交通大学": ["西交", "西安交大", "XJTU"], "中山大学": ["中大", "SYSU"],
+    "同济大学": ["同济", "Tongji"], "四川大学": ["川大", "SCU"], "电子科技大学": ["电子科大", "成电", "UESTC"],
+    "西安电子科技大学": ["西电", "XDU", "Xidian"], "中国人民大学": ["人大", "RUC"], "北京邮电大学": ["北邮", "BUPT"],
+    "天津大学": ["天大", "TJU"], "南开大学": ["南开"], "东南大学": ["东南", "SEU"], "山东大学": ["山大", "SDU"],
+    "厦门大学": ["厦大", "XMU"], "中南大学": ["中南", "CSU"], "湖南大学": ["湖大", "HNU"], "大连理工大学": ["大工", "大连理工", "DUT"],
+    "吉林大学": ["吉大", "JLU"], "东北大学": ["东北大学", "NEU"], "北京师范大学": ["北师大", "BNU"], "华东师范大学": ["华东师大", "华师大", "ECNU"],
+    "重庆大学": ["重大", "CQU"], "华南理工大学": ["华工", "华南理工", "SCUT"], "中国科学院大学": ["国科大", "中科院", "UCAS"],
+    "北京科技大学": ["北科", "北科大", "USTB"], "北京交通大学": ["北交", "北交大", "BJTU"], "北京化工大学": ["北化", "BUCT"],
+    "中国农业大学": ["中农", "CAU"], "南方科技大学": ["南科大", "SUSTech"], "上海科技大学": ["上科大", "ShanghaiTech"],
+    "西南交通大学": ["西南交大", "SWJTU"], "武汉理工大学": ["武理", "WHUT"], "中国海洋大学": ["中国海大", "OUC"],
+}
+_UNI = {}
+for canon, al in UNI_ALIASES.items():
+    for a in [canon] + al:
+        _UNI[a.lower()] = canon
+
+
+def norm_unis(text):
+    """'北航、清华 / ZJU' -> ['北京航空航天大学', '清华大学', '浙江大学']"""
+    out = []
+    for part in re.split(r"[、,，;；/|\n]+|\s{2,}| 和 |和", str(text or "")):
+        x = part.strip().strip("。.")
+        if not x or x.lower() in ("nan", "无", "none", "-"):
+            continue
+        canon = _UNI.get(x.lower())
+        if canon is None:
+            canon = next((c for c in UNI_ALIASES if c in x), x)  # e.g. "北京航空航天大学本科" -> canonical
+        if canon not in out:
+            out.append(canon)
+    return out
+
+
 def norm_outcome(s):
     s = str(s or "")
     if "取消" in s:
@@ -124,6 +164,7 @@ def read_export(path):
           "入境结果", "待了多久", "手机", "补充", "公开", "停留"]}
     if c["签证情况"] is None:
         c["签证情况"] = find_col(cols, "签证") if find_col(cols, "签证") != c["签证类型"] else None
+    c_uni = find_col(cols, "学校名称")
     c_stem = find_col(cols, "STEM", "小类")
     c_non = find_col(cols, "非 STEM", "小类") or find_col(cols, "非STEM", "小类")
     if c_stem == c_non:
@@ -161,6 +202,7 @@ def read_export(path):
             "major_sub": pick(sub_raw, NONSTEM_SUB if cat == "非 STEM" else STEM_SUB,
                               "其他非 STEM" if cat == "非 STEM" else "其他 STEM"),
             "schools": [pick(x, SCHOOLS) for x in multi(row, "就读过的院校")],
+            "unis": norm_unis(row[c_uni]) if c_uni is not None else [],
             "outcome": norm_outcome(g("入境结果")),
             "duration": pick(g("待了多久"), DURATIONS, None),
             "questions": [pick(x, QUESTIONS) for x in multi(row, "哪些问题")],
@@ -172,6 +214,13 @@ def read_export(path):
 
 
 # ---------------------------------------------------------------- demo data
+
+DEMO_UNIS = {
+    "国防七子 / 军队院校": ["北京航空航天大学", "北京理工大学", "哈尔滨工业大学", "哈尔滨工程大学", "西北工业大学", "南京航空航天大学", "南京理工大学", "国防科技大学"],
+    "其他可能涉及 10043 的高校": ["电子科技大学", "四川大学", "中国人民大学", "西安电子科技大学"],
+    "其他国内高校 / 没有在国内读过大学": ["清华大学", "北京大学", "浙江大学", "上海交通大学", "复旦大学", "中国科学技术大学", "南京大学", "武汉大学", "华中科技大学", "中山大学", "同济大学", "厦门大学", "山东大学", "北京邮电大学"],
+}
+
 
 def fake_records(n=420, seed=7):
     rnd = random.Random(seed)
@@ -201,6 +250,7 @@ def fake_records(n=420, seed=7):
             "visa_status": rnd.choices(VISA_STATUS, [45, 25, 30])[0],
             "stay": rnd.choices(STAYS, [30, 35, 15, 8, 12])[0],
             "role": role, "major_cat": cat, "major_sub": sub, "schools": [school],
+            "unis": rnd.sample(DEMO_UNIS[school], 1 if rnd.random() < .7 else 2) if rnd.random() < .75 else [],
             "outcome": outcome, "duration": None, "questions": [], "device": "没有",
             "story": "", "publish": False,
         }
@@ -277,7 +327,19 @@ def aggregate(recs, demo):
     stories = [{"month": r["date"].strftime("%Y-%m"), "visa": r["visa"], "role": r["role"],
                 "mc": r["major_cat"], "o": r["outcome"], "dur": r["duration"], "text": r["story"][:600]}
                for r in recs if r["publish"] and r["story"]]
-    return {"demo": demo, "updated": today.isoformat(), "rows": rows, "stories": stories[:60]}
+    by_uni = defaultdict(list)
+    for r in recs:
+        for u in r.get("unis") or []:
+            by_uni[u].append(r)
+    uni_rows, other = [], []
+    for u, rs in by_uni.items():
+        c = Counter(x["outcome"] for x in rs)
+        item = {"key": u, "n": len(rs), "pass": c["pass"], "held": c["held"], "denied": c["denied"], "revoked": c["revoked"]}
+        (uni_rows if len(rs) >= MIN_N else other).append(item)
+    uni_rows.sort(key=lambda x: -x["n"])
+    if other:
+        uni_rows.append({"key": "__other__", **{k: sum(o[k] for o in other) for k in ("n", "pass", "held", "denied", "revoked")}})
+    return {"demo": demo, "updated": today.isoformat(), "rows": rows, "unis": uni_rows, "min_n": MIN_N, "stories": stories[:60]}
 
 
 def main():

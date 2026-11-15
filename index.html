@@ -95,6 +95,7 @@ h1 { font-size: clamp(22px, 4vw, 30px); line-height: 1.25; margin: 0 0 8px; }
 .more { font: inherit; font-size: 12.5px; color: var(--accent); background: none; border: 0; padding: 4px 0 0; cursor: pointer; }
 
 .wide { margin-top: 12px; }
+#unis .row { grid-template-columns: minmax(120px, 22%) 1fr 52px; }
 .trendcard { margin: 0 0 12px; }
 .tlegend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--text-2); margin: 0 0 6px; }
 .tlegend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: 3px; }
@@ -164,6 +165,12 @@ footer { color: var(--text-3); font-size: 12px; padding: 20px 0 36px; text-align
 
   <div class="cards" id="cards"></div>
 
+  <section class="card wide" id="uniSec">
+    <h2 data-t="uniH"></h2>
+    <p class="sub" id="uniSub"></p>
+    <div id="unis"></div>
+  </section>
+
   <section class="card wide">
     <h2 data-t="casesH"></h2>
     <p class="sub" data-t="casesSub"></p>
@@ -204,6 +211,7 @@ const T = {
     c_mc: "专业大类", c_stem: "STEM 小类", c_non: "非 STEM 小类", c_sch: "国内就读院校", c_schSub: "",
     c_stay: "本次入境前在国内停留", c_q: "被问到的问题", c_qSub: "仅进过小黑屋的 case；多选", c_dur: "在小黑屋待了多久", c_dev: "手机 / 电脑是否被检查",
     cases: "{n} 例", showAll: "展开全部（{n}）", showLess: "收起",
+    uniH: "按国内学校", uniSub: "根据选填的学校名称统计；一个 case 可计入多所学校。为保护隐私，累计不足 {k} 例的学校合并为“其他学校”，且此表不随上方筛选变化。", otherUni: "其他学校（各不足 {k} 例）",
     casesH: "最近的 case", casesSub: "按入境周倒序，只显示粗略信息。",
     th_w: "入境周", th_port: "机场", th_visa: "签证", th_role: "身份", th_major: "专业", th_stay: "国内停留", th_o: "结果", th_dur: "小黑屋时长",
     storyH: "补充经历", storySub: "经审核后公开。", noData: "暂无数据", weekOf: "{d} 当周",
@@ -229,6 +237,7 @@ const T = {
     c_mc: "Field", c_stem: "STEM sub-field", c_non: "Non-STEM sub-field", c_sch: "Chinese university", c_schSub: "",
     c_stay: "Time in China before entry", c_q: "Topics asked", c_qSub: "Secondary cases only; multi-select", c_dur: "Time in secondary", c_dev: "Phone / laptop searched?",
     cases: "{n}", showAll: "Show all ({n})", showLess: "Show less",
+    uniH: "By Chinese university", uniSub: "From the optional university-name answer; a case may count for several. Universities with fewer than {k} cases are grouped as “Other”, and this table does not follow the filters.", otherUni: "Other universities (< {k} each)",
     casesH: "Recent cases", casesSub: "Newest first; coarse details only.",
     th_w: "Week", th_port: "Airport", th_visa: "Visa", th_role: "Status", th_major: "Field", th_stay: "In China", th_o: "Outcome", th_dur: "Secondary",
     storyH: "Stories", storySub: "Published after review.", noData: "No data yet", weekOf: "Week of {d}",
@@ -446,6 +455,22 @@ function renderTrend(rows) {
   document.getElementById("tlegend").innerHTML = series.map(([k, c, n]) => `<span><i style="background:var(${c})"></i>${n}</span>`).join("") + `<span><i class="hollow"></i>${t("l_low")}</span>`;
 }
 
+function renderUnis() {
+  const list0 = D.unis || [];
+  document.getElementById("uniSec").hidden = !list0.length;
+  document.getElementById("uniSub").textContent = t("uniSub", { k: D.min_n || 3 });
+  const all = expanded.unis, list = all ? list0 : list0.slice(0, 15);
+  const max = Math.max(1, ...list0.filter(d => d.key !== "__other__").map(d => d.n));
+  const lab = k => k === "__other__" ? t("otherUni", { k: D.min_n || 3 }) : k;
+  const el = document.getElementById("unis");
+  el.innerHTML = list.map((d, i) => {
+    const segs = OUT.map(k => d[k] ? `<span class="s-${k}" style="flex:${d[k]} 0 0;background:var(${OC[k]})">${d[k] / max > .03 ? d[k] : ""}</span>` : "").join("");
+    return `<div class="row uni" data-tip data-i="${i}"><div class="lab">${esc(lab(d.key))}</div><div><div class="bar" style="width:${Math.min(100, Math.max(d.n / max * 100, 2))}%">${segs}</div></div><div class="n">${t("cases", { n: d.n })}</div></div>`;
+  }).join("") + (list0.length > 15 ? `<button class="more" id="uniMore">${all ? t("showLess") : t("showAll", { n: list0.length })}</button>` : "");
+  el.querySelectorAll(".row").forEach(r => { const d = list[+r.dataset.i]; r._tip = tipHtml(lab(d.key), d); });
+  const b = document.getElementById("uniMore"); if (b) b.onclick = () => { expanded.unis = !expanded.unis; renderUnis(); };
+}
+
 function renderCases(rows) {
   const el = document.getElementById("cases");
   if (!rows.length) { el.innerHTML = `<div class="empty">${t("noData")}</div>`; return; }
@@ -467,6 +492,7 @@ function render() {
   const ban = document.getElementById("demoBanner"); ban.hidden = !D.demo; ban.textContent = t("demo");
   renderFilters();
   renderBody();
+  renderUnis();
   document.getElementById("storySec").hidden = !D.stories.length;
   document.getElementById("stories").innerHTML = D.stories.map(s => `<div class="story"><div class="m"><span>${esc(s.month)}</span><span class="pill" style="--c:var(${OC[s.o]})">${t(s.o)}</span>${[s.visa, s.role, s.mc, s.dur].filter(Boolean).map(x => `<span>${esc(L(x))}</span>`).join("")}</div><p>${esc(s.text)}</p></div>`).join("");
 }
