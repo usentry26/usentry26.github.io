@@ -32,6 +32,7 @@ PORTS = ["LAX 洛杉矶", "SFO 旧金山", "SEA 西雅图", "JFK 纽约肯尼迪
          "加拿大预清关（温哥华/多伦多等）", "其他地点预清关（都柏林/阿布扎比等）", "陆路口岸"]
 VISAS = ["F-1", "J-1", "H-1B", "B1/B2", "O-1", "其他"]
 VISA_STATUS = ["首次签证", "续签后首次入境", "用旧签证再次入境"]
+STAYS = ["1 个月以内", "1 到 3 个月", "3 到 5 个月", "5 个月以上", "首次赴美（不适用）"]
 ROLES = ["本科", "硕士", "博士", "博士后", "访问学者", "工作", "其他"]
 GRAD_ROLES = {"硕士", "博士", "博士后", "访问学者"}
 STEM_SUB = ["计算机科学/软件", "AI/机器学习/数据科学", "网络安全", "电子电气/通信",
@@ -125,7 +126,7 @@ def read_export(path):
 
     c = {k: find_col(cols, k) for k in
          ["入境日期", "入境机场", "签证类型", "签证情况", "当前身份", "专业大类",
-          "入境结果", "待了多久", "手机", "补充", "公开"]}
+          "入境结果", "待了多久", "手机", "补充", "公开", "停留"]}
     if c["签证情况"] is None:
         c["签证情况"] = find_col(cols, "签证") if find_col(cols, "签证") != c["签证类型"] else None
     c_stem = find_col(cols, "STEM", "小类")
@@ -159,6 +160,7 @@ def read_export(path):
             "port": pick(g("入境机场") if c["入境机场"] is not None else None, PORTS),
             "visa": pick(g("签证类型"), VISAS),
             "visa_status": pick(g("签证情况"), VISA_STATUS),
+            "stay": pick(g("停留"), STAYS, None),
             "role": pick(g("当前身份"), ROLES),
             "major_cat": cat,
             "major_sub": pick(sub_raw, NONSTEM_SUB if cat == "非 STEM" else STEM_SUB,
@@ -202,6 +204,7 @@ def fake_records(n=420, seed=7):
             "date": d, "port": rnd.choices(PORTS, [16, 12, 6, 10, 5, 8, 7, 4, 5, 4, 5, 3] + [1] * (len(PORTS) - 12))[0],
             "visa": rnd.choices(VISAS, [70, 12, 8, 6, 2, 2])[0],
             "visa_status": rnd.choices(VISA_STATUS, [45, 25, 30])[0],
+            "stay": rnd.choices(STAYS, [30, 35, 15, 8, 12])[0],
             "role": role, "major_cat": cat, "major_sub": sub, "schools": [school],
             "outcome": outcome, "duration": None, "questions": [], "device": "没有",
             "story": "", "publish": False,
@@ -300,6 +303,7 @@ def aggregate(recs, demo):
         "by_visa": breakdown(recs, "visa", VISAS),
         "by_visa_status": breakdown(recs, "visa_status", VISA_STATUS),
         "by_port": breakdown(recs, "port"),
+        "by_stay": breakdown(recs, "stay", STAYS),
         "held_n": len(held),
         "questions": sorted(counts([q for r in held for q in r["questions"]], QUESTIONS),
                             key=lambda x: -x["n"]),

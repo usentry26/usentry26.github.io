@@ -207,6 +207,8 @@ footer { color: var(--text-3); font-size: 12.5px; padding: 20px 0 40px; text-ali
     <div id="byVisa"></div>
     <h3 data-t="visaStatusH"></h3>
     <div id="byVisaStatus"></div>
+    <h3 data-t="stayH"></h3>
+    <div id="byStay"></div>
   </section>
 
   <section class="card">
@@ -256,7 +258,7 @@ const T = {
     majorH: "专业", majorSub: "右侧数字为进小黑屋比例（含被拒）。",
     stemH: "STEM 细分方向", nonstemH: "非 STEM 细分方向",
     portH: "入境机场", portSub: "不同机场的边检情况。样本少的机场合并为“其他”。",
-    whoH: "身份与签证", roleH: "当前身份", visaH: "签证类型", visaStatusH: "签证情况",
+    whoH: "身份与签证", roleH: "当前身份", visaH: "签证类型", visaStatusH: "签证情况", stayH: "本次入境前在国内停留时长",
     roomH: "小黑屋里发生了什么", roomSubT: "基于 {n} 条进过小黑屋的记录。",
     qH: "被问到的问题（占进小黑屋人数的比例）", durH: "在小黑屋待了多久", devH: "手机或电脑是否被检查",
     storyH: "匿名经历", storySub: "经审核后公开。为保护隐私，只显示月份、签证和身份等粗略信息。", noStory: "暂时还没有公开的经历。",
@@ -285,7 +287,7 @@ const T = {
     majorH: "Field of study", majorSub: "Number on the right = share sent to secondary (incl. denied).",
     stemH: "STEM fields", nonstemH: "Non-STEM fields",
     portH: "Port of entry (airport)", portSub: "Airports with few reports are grouped into “Other”.",
-    whoH: "Status & visa", roleH: "Current status", visaH: "Visa type", visaStatusH: "Visa history",
+    whoH: "Status & visa", roleH: "Current status", visaH: "Visa type", visaStatusH: "Visa history", stayH: "Time spent in China before this entry",
     roomH: "What happens in secondary", roomSubT: "Based on {n} reports that went to secondary inspection.",
     qH: "Topics asked about (share of secondary cases)", durH: "Time spent in secondary", devH: "Phone / laptop searched?",
     storyH: "Anonymous stories", storySub: "Published after review. Only coarse details (month, visa, status) are shown.", noStory: "No published stories yet.",
@@ -306,6 +308,7 @@ const EN = {
   "STEM": "STEM", "非 STEM": "Non-STEM", "其他（样本较少）": "Other (few reports)",
   "国防七子或军工背景": "“Seven Sons of National Defence” / defence-linked", "其他国内高校": "Other Chinese universities", "没有在国内读过大学": "No university in China",
   "本科": "Undergraduate", "硕士": "Master's", "博士": "PhD", "博士后": "Postdoc", "访问学者": "Visiting scholar", "工作": "Employed", "其他": "Other",
+  "1 个月以内": "< 1 month", "1 到 3 个月": "1–3 months", "3 到 5 个月": "3–5 months", "5 个月以上": "> 5 months", "首次赴美（不适用）": "First trip to the U.S.",
   "首次签证": "First visa", "续签后首次入境": "First entry after renewal", "用旧签证再次入境": "Re-entry on existing visa",
   "计算机科学/软件": "Computer science / software", "AI/机器学习/数据科学": "AI / ML / data science", "网络安全": "Cybersecurity",
   "电子电气/通信": "EE / communications", "芯片/半导体/集成电路": "Chips / semiconductors / IC", "航空航天": "Aerospace",
@@ -451,6 +454,7 @@ function render() {
   stackRows(document.getElementById("byRole"), D.by_role);
   stackRows(document.getElementById("byVisa"), D.by_visa);
   stackRows(document.getElementById("byVisaStatus"), D.by_visa_status);
+  stackRows(document.getElementById("byStay"), D.by_stay || []);
   document.getElementById("roomSub").textContent = t("roomSubT").replace("{n}", D.held_n);
   barRows(document.getElementById("questions"), D.questions, D.held_n);
   barRows(document.getElementById("durations"), D.durations, D.held_n);
