@@ -132,6 +132,25 @@ def parse_date(v):
         return None
 
 
+TRIVIAL = {"无", "没有", "暂无", "无补充", "没", "no", "none", "n/a", "na", "/", "-", "—", "。", "."}
+_SCRUB = [
+    (re.compile(r"[\w.+-]+@[\w-]+(\.[\w-]+)+"), "[邮箱已隐去]"),
+    (re.compile(r"https?://\S+|www\.\S+"), "[链接已隐去]"),
+    (re.compile(r"(微信号?|wechat|vx|wx|v信|qq|QQ号?|电话|手机号?|tel|phone)\s*[:：]?\s*[A-Za-z0-9_-]{5,}", re.I), "[联系方式已隐去]"),
+    (re.compile(r"(?<![\d.])\+?\d[\d\s-]{7,}\d(?![\d.])"), "[号码已隐去]"),           # phone-like digit runs
+    (re.compile(r"(?<![A-Za-z0-9])[A-Za-z]{1,2}\d{7,9}(?![A-Za-z0-9])"), "[证件号已隐去]"),  # passport-like
+]
+
+
+def scrub(text):
+    t = str(text or "").strip()
+    if t.lower() in TRIVIAL or len(t) < 2:
+        return ""
+    for rx, rep in _SCRUB:
+        t = rx.sub(rep, t)
+    return t[:600]
+
+
 def find_col(cols, *keys):
     for c in cols:
         if all(k in str(c) for k in keys):
@@ -208,8 +227,9 @@ def read_export(path):
             "duration": pick(g("待了多久"), DURATIONS, None),
             "questions": [pick(x, QUESTIONS) for x in multi(row, "哪些问题")],
             "device": pick(g("手机"), DEVICES, "不确定"),
-            "story": str(g("补充") or "").strip(),
-            "publish": str(g("公开") or "").strip().upper() in ("Y", "YES", "是", "1", "TRUE"),
+            "story": scrub(g("补充")),
+            # stories are auto-published (after scrub) unless the moderator marks 公开=N
+            "publish": str(g("公开") or "").strip().upper() not in ("N", "NO", "否", "0", "FALSE"),
         })
     return recs
 

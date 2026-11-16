@@ -22,5 +22,15 @@
   }
  ],
  "min_n": 3,
- "stories": []
+ "stories": [
+  {
+   "month": "2026-10",
+   "visa": "F-1",
+   "role": "博士",
+   "mc": "STEM",
+   "o": "pass",
+   "dur": null,
+   "text": "10.27之前肯定是没有关系的"
+  }
+ ]
 }
