@@ -1,7 +1,26 @@
 {
  "demo": false,
- "updated": "2026-11-15",
- "rows": [],
+ "updated": "2026-11-16",
+ "rows": [
+  {
+   "w": "2026-10-19",
+   "port": "预清关 · 多伦多 YYZ",
+   "visa": "F-1",
+   "vs": "首次签证",
+   "stay": "1 周以内",
+   "role": "博士",
+   "mc": "STEM",
+   "ms": "其他 STEM",
+   "sch": [
+    "其他可能涉及 10043 的高校"
+   ],
+   "o": "pass",
+   "u": [],
+   "dur": null,
+   "q": [],
+   "dev": null
+  }
+ ],
  "min_n": 3,
  "stories": []
 }

@@ -161,7 +161,8 @@ def read_export(path):
 
     c = {k: find_col(cols, k) for k in
          ["入境日期", "入境机场", "签证类型", "签证情况", "当前身份", "专业大类",
-          "入境结果", "待了多久", "手机", "补充", "公开", "停留"]}
+          "入境结果", "待了多久", "手机", "补充", "停留"]}
+    c["公开"] = next((x for x in cols if str(x).strip() == "公开"), None)
     if c["签证情况"] is None:
         c["签证情况"] = find_col(cols, "签证") if find_col(cols, "签证") != c["签证类型"] else None
     c_uni = find_col(cols, "学校名称")
