@@ -132,7 +132,7 @@ def parse_date(v):
         return None
 
 
-TRIVIAL = {"无", "没有", "暂无", "无补充", "没", "no", "none", "n/a", "na", "/", "-", "—", "。", "."}
+TRIVIAL = {"nan", "无", "没有", "暂无", "无补充", "没", "no", "none", "n/a", "na", "/", "-", "—", "。", "."}
 _SCRUB = [
     (re.compile(r"[\w.+-]+@[\w-]+(\.[\w-]+)+"), "[邮箱已隐去]"),
     (re.compile(r"https?://\S+|www\.\S+"), "[链接已隐去]"),

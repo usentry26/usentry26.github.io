@@ -42,15 +42,6 @@
  "min_n": 3,
  "stories": [
   {
-   "month": "2026-11",
-   "visa": "F-1",
-   "role": "博士",
-   "mc": "STEM",
-   "o": "pass",
-   "dur": null,
-   "text": "nan"
-  },
-  {
    "month": "2026-10",
    "visa": "F-1",
    "role": "博士",
