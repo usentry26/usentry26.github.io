@@ -27,7 +27,7 @@ OUT = Path(__file__).resolve().parent.parent / "data.json"
 PORTS = ["LAX 洛杉矶", "SFO 旧金山", "SJC 圣何塞", "OAK 奥克兰", "SEA 西雅图", "PDX 波特兰", "SAN 圣地亚哥", "SNA 橙县", "ONT 安大略", "SMF 萨克拉门托", "LAS 拉斯维加斯", "PHX 凤凰城", "SLC 盐湖城", "DEN 丹佛", "HNL 檀香山", "ANC 安克雷奇", "ORD 芝加哥", "DTW 底特律", "MSP 明尼阿波利斯", "DFW 达拉斯", "IAH 休斯顿", "AUS 奥斯汀", "SAT 圣安东尼奥", "STL 圣路易斯", "MCI 堪萨斯城", "CLE 克利夫兰", "CMH 哥伦布", "IND 印第安纳波利斯", "JFK 纽约肯尼迪", "EWR 纽瓦克", "BOS 波士顿", "PHL 费城", "IAD 华盛顿杜勒斯", "BWI 巴尔的摩", "PIT 匹兹堡", "RDU 罗利-达勒姆", "CLT 夏洛特", "ATL 亚特兰大", "BNA 纳什维尔", "MIA 迈阿密", "FLL 劳德代尔堡", "MCO 奥兰多", "TPA 坦帕", "预清关 · 温哥华 YVR", "预清关 · 多伦多 YYZ", "预清关 · 蒙特利尔 YUL", "预清关 · 卡尔加里 YYC", "预清关 · 其他加拿大机场", "预清关 · 都柏林 DUB", "预清关 · 阿布扎比 AUH", "陆路口岸（美加/美墨边境）", "其他"]
 VISAS = ["F-1", "J-1", "H-1B", "B1/B2", "O-1", "其他"]
 VISA_STATUS = ["首次签证", "续签后首次入境", "用旧签证再次入境"]
-STAYS = ["1 周以内", "1 到 2 周", "2 到 3 周", "3 周到 1 个月", "1 个月到 1 个半月", "1 个半月到 2 个月", "2 到 3 个月", "3 到 5 个月", "5 个月以上", "首次赴美（不适用）"]
+STAYS = ["1 周以内", "1 到 2 周", "2 到 3 周", "3 周到 1 个月", "1 个月到 1 个半月", "1 个半月到 2 个月", "2 到 3 个月", "3 到 5 个月", "5 个月以上", "没有回国（从其他国家/地区入境）", "首次赴美（不适用）"]
 ROLES = ["本科", "硕士", "博士", "博士后", "访问学者", "工作", "其他"]
 GRAD_ROLES = {"硕士", "博士", "博士后", "访问学者"}
 STEM_SUB = ["计算机科学/软件", "AI/机器学习/数据科学", "网络安全", "电子电气/通信",
@@ -269,7 +269,7 @@ def fake_records(n=420, seed=7):
             "date": d, "port": rnd.choices(PORTS, [16, 12, 3, 1, 6, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 1, 8, 5, 2, 5, 4, 1, 1, 1, 1, 1, 1, 1, 10, 5, 7, 2, 4, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 4, 3, 1, 1, 1, 1, 1, 1, 1])[0],
             "visa": rnd.choices(VISAS, [70, 12, 8, 6, 2, 2])[0],
             "visa_status": rnd.choices(VISA_STATUS, [45, 25, 30])[0],
-            "stay": rnd.choices(STAYS, [5, 10, 14, 16, 12, 9, 10, 8, 5, 11])[0],
+            "stay": rnd.choices(STAYS, [5, 10, 14, 16, 12, 9, 10, 8, 5, 6, 11])[0],
             "role": role, "major_cat": cat, "major_sub": sub, "schools": [school],
             "unis": rnd.sample(DEMO_UNIS[school], 1 if rnd.random() < .7 else 2) if rnd.random() < .75 else [],
             "outcome": outcome, "duration": None, "questions": [], "device": "没有",
